@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="KH Chauffeur — discreet, polished private travel for airport transfers, corporate journeys and special occasions.">
+  <title>KH Chauffeur — Arrive Exceptionally</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="KH Chauffeur home">
+      <span class="brand-mark">KH</span><span>CHAUFFEUR</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#services">Services</a>
+      <a href="#fleet">Fleet</a>
+      <a href="#standard">Our standard</a>
+    </nav>
+    <a class="nav-cta" href="#book">Request a ride <span>↗</span></a>
+    <button class="menu-button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-media" role="img" aria-label="Black luxury sedan awaiting passengers in a city at night"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content reveal">
+        <p class="eyebrow"><span></span> Private travel, precisely handled</p>
+        <h1>Arrive<br><em>exceptionally.</em></h1>
+        <p class="hero-copy">A private chauffeur service built around calm, comfort and impeccable timing—where every mile feels effortless.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#book">Plan your journey <span>↗</span></a>
+          <a class="text-link" href="#services">Explore the service <span>↓</span></a>
+        </div>
+      </div>
+      <div class="hero-index"><span>01</span><div></div><span>05</span></div>
+    </section>
+
+    <section class="intro section-pad reveal">
+      <p class="section-label">The KH experience</p>
+      <div>
+        <h2>Not merely a ride.<br><span>A quieter way to move.</span></h2>
+        <p>From the moment your chauffeur arrives, every detail is considered. Discreet service, immaculate vehicles and a journey paced entirely around you.</p>
+      </div>
+    </section>
+
+    <section class="services section-pad" id="services">
+      <div class="section-head reveal">
+        <p class="section-label">Services</p>
+        <p>For journeys that matter</p>
+      </div>
+      <div class="service-grid">
+        <article class="service-card reveal">
+          <div class="service-photo airport"></div>
+          <span class="card-number">01</span>
+          <div class="card-copy"><h3>Airport<br>transfers</h3><p>Calm departures and seamless arrivals, with attentive timing from door to terminal.</p><a href="#book" aria-label="Request an airport transfer">↗</a></div>
+        </article>
+        <article class="service-card reveal">
+          <div class="service-photo corporate"></div>
+          <span class="card-number">02</span>
+          <div class="card-copy"><h3>Corporate<br>travel</h3><p>A polished extension of your working day—with space, privacy and punctuality built in.</p><a href="#book" aria-label="Request corporate travel">↗</a></div>
+        </article>
+        <article class="service-card reveal">
+          <div class="service-photo occasion"></div>
+          <span class="card-number">03</span>
+          <div class="card-copy"><h3>Special<br>occasions</h3><p>Elegant transport for the moments worth remembering, planned around your day.</p><a href="#book" aria-label="Request special occasion travel">↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="standard section-pad" id="standard">
+      <div class="standard-image reveal"><span>THE<br>KH<br>STANDARD</span></div>
+      <div class="standard-copy reveal">
+        <p class="section-label">Why travel with us</p>
+        <h2>Details are<br>the destination.</h2>
+        <div class="principle"><span>01</span><div><h3>Quietly punctual</h3><p>Thoughtful route planning and attentive coordination keep your journey composed.</p></div></div>
+        <div class="principle"><span>02</span><div><h3>Discreet by design</h3><p>Professional conduct, respectful conversation and privacy at every stage.</p></div></div>
+        <div class="principle"><span>03</span><div><h3>Comfort, considered</h3><p>A clean, refined cabin prepared so you can work, reset or simply enjoy the road.</p></div></div>
+      </div>
+    </section>
+
+    <section class="fleet section-pad" id="fleet">
+      <div class="fleet-copy reveal">
+        <p class="section-label">The fleet</p>
+        <h2>Your space,<br><span>wherever you’re going.</span></h2>
+        <p>Choose the atmosphere that suits your journey—from executive calm to generous group comfort.</p>
+        <div class="fleet-tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-fleet="executive">Executive</button>
+          <button role="tab" aria-selected="false" data-fleet="suv">Luxury SUV</button>
+          <button role="tab" aria-selected="false" data-fleet="group">Group travel</button>
+        </div>
+        <p class="fleet-detail" aria-live="polite">A refined saloon for up to three passengers—ideal for airport and business travel.</p>
+      </div>
+      <div class="fleet-image reveal"><span class="fleet-tag">Executive class</span></div>
+    </section>
+
+    <section class="quote"><p class="reveal">“Good service gets you there.<br><em>Exceptional service changes how you arrive.</em>”</p></section>
+
+    <section class="booking section-pad" id="book">
+      <div class="booking-intro reveal">
+        <p class="section-label">Your next journey</p>
+        <h2>Where can we<br>take you?</h2>
+        <p>Share the essentials and we’ll help shape the rest. This preview form is ready to connect to your preferred booking channel.</p>
+      </div>
+      <form class="booking-form reveal">
+        <label>Pickup location<input type="text" name="pickup" placeholder="Address or airport" required></label>
+        <label>Destination<input type="text" name="destination" placeholder="Where are you going?" required></label>
+        <div class="form-row"><label>Date<input type="date" name="date" required></label><label>Passengers<select name="passengers"><option>1 passenger</option><option>2 passengers</option><option>3 passengers</option><option>4+ passengers</option></select></label></div>
+        <button class="button button-dark" type="submit">Request availability <span>↗</span></button>
+        <p class="form-note" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><span class="brand-mark">KH</span><p>PRIVATE CHAUFFEUR SERVICE</p></div>
+    <div><p class="footer-label">Explore</p><a href="#services">Services</a><a href="#fleet">Fleet</a><a href="#standard">Our standard</a></div>
+    <div><p class="footer-label">Contact</p><a href="mailto:hello@example.com">hello@example.com</a><a href="tel:+10000000000">+1 000 000 0000</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+    <p class="copyright">© <span id="year"></span> KH Chauffeur. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
