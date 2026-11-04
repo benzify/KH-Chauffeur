@@ -4,7 +4,7 @@ body{background:var(--paper);letter-spacing:-.006em}
 body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .site-header{height:94px;padding:0 max(4.5vw,28px);border-bottom:1px solid rgba(255,255,255,.16);background:#0a0d0b}
 .brand{font-size:10px;letter-spacing:.26em}.brand-mark{width:42px;height:42px;font-size:14px}.main-nav{gap:36px}.main-nav a{font-size:11px;letter-spacing:.03em;color:#aaa}.nav-cta{background:transparent;color:#fff;border-bottom:1px solid #aaa;padding:10px 0}.button,.nav-cta{text-transform:none}.button{padding:18px 23px}.button-gold{background:#eeeae1;color:#101210}.button-outline{border-color:rgba(255,255,255,.48)}
-.hero{min-height:calc(100vh - 94px);height:min(900px,calc(100vh - 20px));background-image:linear-gradient(90deg,rgba(5,8,6,.9) 0%,rgba(5,8,6,.58) 43%,rgba(5,8,6,.16) 76%),linear-gradient(0deg,rgba(5,8,6,.66),transparent 56%),url('assets/sprinter-exterior-enhanced.png');background-position:center;background-size:cover}
+.hero{min-height:calc(100vh - 94px);height:min(900px,calc(100vh - 20px));background-image:linear-gradient(90deg,rgba(5,8,6,.9) 0%,rgba(5,8,6,.58) 43%,rgba(5,8,6,.16) 76%),linear-gradient(0deg,rgba(5,8,6,.66),transparent 56%),url('assets/sprinter-exterior-enhanced.webp');background-position:center;background-size:cover}
 .hero-content{padding:120px 0 88px;max-width:920px}.eyebrow{display:flex;align-items:center;gap:15px;color:#d0c4ae}.eyebrow:before{content:"";width:34px;height:1px;background:currentColor}.hero h1{font-size:clamp(72px,10.8vw,154px);line-height:.77;max-width:980px;margin:50px 0 42px}.hero h1 em{color:#c6c1b7}.hero-copy{max-width:520px;font-size:16px;line-height:1.8;color:#d2d3ce}.hero-actions{margin-top:38px;gap:28px}.hero-actions .button-outline{border-width:0 0 1px;padding-left:0;padding-right:0}.image-disclosure{font-size:9px;color:#c3c3bc;background:rgba(5,8,6,.72);letter-spacing:.11em}
 .section{padding:140px 0}.section-dark{background:#0d100e}.section-cream{background:#e9e5dc}.kicker{font-size:9px;color:#74766f}.section-dark .kicker{color:#979992}.section-title{font-size:clamp(52px,7.2vw,100px);line-height:.92;margin:38px 0}.lede{font:400 19px/1.75 var(--sans)}
 .split{grid-template-columns:.92fr 1.08fr;gap:10vw}.fact-strip{margin-top:95px}.fact{padding:30px 24px}.fact strong{font-size:38px}.fact span{font-size:10px;letter-spacing:.04em;text-transform:uppercase}
@@ -18,3 +18,61 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .footer{padding-top:95px}.footer h3{font-size:39px}.footer a{font-size:12px}.footer-bottom{margin-top:70px}
 @media(max-width:900px){.site-header{height:78px}.main-nav{top:78px}.hero{height:auto;min-height:740px}.hero h1{font-size:clamp(62px,16vw,112px)}.split{grid-template-columns:1fr}.vehicle-hero{grid-template-columns:1fr}.vehicle-hero img{height:560px}.fleet-card.featured{grid-template-columns:1fr}.policy-grid,.steps,.faq-grid{grid-template-columns:1fr 1fr}.policy-card,.step,.faq-card{border-bottom:1px solid var(--line)}.page-hero{min-height:460px}.page-hero h1{font-size:clamp(58px,12vw,96px)}}
 @media(max-width:600px){.site-header{padding:0 18px}.brand{gap:10px}.brand-mark{width:38px;height:38px}.hero{min-height:720px;background-position:60% center}.hero-content{padding:95px 0 65px}.hero h1{font-size:clamp(56px,18vw,82px);margin:40px 0 30px}.hero-copy{font-size:15px}.hero-actions{align-items:flex-start;flex-direction:column}.section{padding:90px 0}.section-title{font-size:48px}.fact-strip{margin-top:60px}.fleet-card h2,.fleet-card h3{font-size:36px}.policy-grid,.steps,.faq-grid{grid-template-columns:1fr}.policy-card,.step,.faq-card{border-right:0}.cta-band{padding:68px 0}.page-hero{padding:100px 0 70px;min-height:430px}.page-hero h1{font-size:55px}.vehicle-hero img{height:390px}.vehicle-panel{padding:70px 7vw}.vehicle-panel h1{font-size:52px}.content-grid h2{font-size:40px}.faq-list summary{font-size:25px}.inquiry-layout{gap:55px}.estimate{padding:25px}.image-disclosure{max-width:90vw}}
+
+/* Fleet page: rate card + vehicle rows. Scoped to new classes so the homepage .fleet-card stays unchanged. */
+.fleet-hero{min-height:0;padding:120px 0 80px}
+.fleet-hero h1{max-width:14ch}
+.fleet-compare{background:var(--cream);padding:90px 0 70px}
+.fleet-table-wrap{overflow-x:auto}
+.fleet-table{width:100%;border-collapse:collapse;font-size:16px;color:var(--ink)}
+.fleet-table caption{text-align:left;font:400 clamp(30px,3.4vw,44px)/1.05 var(--serif);letter-spacing:-.03em;padding-bottom:34px}
+.fleet-table th,.fleet-table td{text-align:left;padding:22px 20px 22px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
+.fleet-table thead th{font:500 13px var(--sans);color:var(--muted);padding-top:0;border-bottom-color:var(--ink)}
+.fleet-table tbody th{font:400 clamp(21px,2vw,27px)/1.15 var(--serif);letter-spacing:-.02em}
+.fleet-table tbody th a{text-decoration:none;border-bottom:1px solid transparent}
+.fleet-table tbody th a:hover{border-bottom-color:currentColor}
+.fleet-table td:nth-child(3){font:400 clamp(30px,3vw,42px)/1 var(--serif);letter-spacing:-.03em}
+.fleet-table td:last-child{font:400 22px var(--serif)}
+.fleet-table .is-pending{color:var(--muted)}
+.fleet-table-note{margin:22px 0 0;font-size:14px;color:var(--muted);max-width:65ch}
+
+.fleet-list{background:var(--paper);padding:40px 0 110px}
+.fleet-row{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(32px,6vw,90px);align-items:center;padding:70px 0;border-bottom:1px solid var(--line);scroll-margin-top:24px}
+.fleet-row:nth-child(even){grid-template-columns:1fr 1.4fr}
+.fleet-row:nth-child(even) .fleet-row-media{order:2}
+/* Limo bus asset is two photos stacked; show only the top shot. */
+#limo-bus .fleet-row-media img{aspect-ratio:2.1/1;object-position:top}
+/* G-Wagon sits in the top of its photo; anchor the crop there so the roof stays in frame. */
+#g-wagon .fleet-row-media img{object-position:center 15%}
+/* Escalade sits low in a tall photo; anchor the crop near the bottom. */
+#escalade-esv .fleet-row-media img{object-position:center 78%}
+.fleet-row-media img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.72) brightness(.86) contrast(1.05);background:var(--night)}
+.fleet-row-body h2{font:400 clamp(36px,4vw,56px)/1 var(--serif);letter-spacing:-.04em;margin:0 0 22px}
+.fleet-rate{font:400 clamp(40px,5vw,64px)/1 var(--serif);letter-spacing:-.04em;margin:0 0 30px}
+.fleet-rate span{font:400 16px var(--sans);letter-spacing:0;color:var(--muted);margin-left:10px}
+.fleet-facts{margin:0 0 34px;border-top:1px solid var(--line)}
+.fleet-facts div{display:grid;grid-template-columns:9.5em 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:16px}
+.fleet-facts dt{color:var(--muted)}
+.fleet-facts dd{margin:0}
+.fleet-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 30px}
+.fleet-actions .button{min-height:48px}
+.fleet-actions .text-link{margin-top:0;font-size:15px;padding:12px 0}
+.fleet-list .fine-print{font-size:13px;color:var(--muted);margin-top:40px}
+
+@media(max-width:900px){
+.fleet-row,.fleet-row:nth-child(even){grid-template-columns:1fr;padding:50px 0}
+.fleet-row:nth-child(even) .fleet-row-media{order:0}
+}
+@media(max-width:600px){
+.fleet-hero{padding:90px 0 60px}
+.fleet-compare{padding:60px 0 50px}
+.fleet-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.fleet-table,.fleet-table tbody,.fleet-table tr,.fleet-table th,.fleet-table td{display:block}
+.fleet-table tr{padding:20px 0;border-bottom:1px solid var(--line)}
+.fleet-table th,.fleet-table td{border:0;padding:4px 0}
+.fleet-table tbody th{padding-bottom:10px}
+.fleet-table td{display:grid;grid-template-columns:9.5rem 1fr;gap:12px;align-items:baseline}
+.fleet-table td::before{content:attr(data-label);font:400 14px var(--sans);color:var(--muted);letter-spacing:0}
+.fleet-table td:nth-child(3),.fleet-table td:last-child{font-size:24px}
+.fleet-facts div{grid-template-columns:1fr;gap:2px}
+}
