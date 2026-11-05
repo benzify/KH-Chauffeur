@@ -1,5 +1,5 @@
 /* Premium editorial art direction layered over the factual site system. */
-:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--line-strong:#85857e;--max:1320px}
+:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--line-strong:#85857e;--mist:#d2d3ce;--bone:#eeeae1;--champagne:#d0c4ae;--focus:#d5ad62;--max:1320px}
 body{background:var(--paper);letter-spacing:-.006em}
 body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .site-header{height:94px;padding:0 max(4.5vw,28px);border-bottom:1px solid rgba(255,255,255,.16);background:#0a0d0b}
@@ -435,4 +435,91 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .rq-hero .hero-copy{font-size:16px}
 .page-request .form-grid{grid-template-columns:1fr;gap:18px}
 .page-request .estimate-grid{grid-template-columns:1fr}
+}
+
+/* ---------- Homepage (body.page-home) ---------- */
+/* Colours come from the :root tokens only (DESIGN.md: Mist, Bone, Champagne, Lamp Gold). */
+.page-home{--muted:#5f5f58}
+.page-home main :focus-visible{outline-color:var(--ink)}
+.page-home .hero :focus-visible,.page-home .section-dark :focus-visible,.page-home .fleet-card :focus-visible{outline-color:var(--focus)}
+.page-home .cta-band :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+
+/* Without JavaScript the fade-in never runs, so .reveal content must stay visible. */
+html:not(.js) .reveal{opacity:1;transform:none}
+/* DESIGN.md: the <em> second line changes colour, not style. */
+.page-home h1 em,.page-home .section-title em{font-style:normal}
+/* Section rhythm: fluid 72-112px instead of the global 140px, and less between the fleet and "Know the base". */
+.page-home .section{padding:clamp(72px,8vw,112px) 0}
+.page-home .hm-fleet{padding-bottom:clamp(56px,6vw,80px)}
+.page-home .hm-how{padding-top:clamp(56px,6vw,80px)}
+.page-home .section-title{margin-top:0}
+/* Hero: same photo and overlay; caption instead of the old disclosure. */
+.hm-caption{left:auto;right:0}
+/* Align the hero text to the page grid (it was a centred 920px box over the van). */
+.hm-hero .hero-content{max-width:none}
+.hm-hero .hero-copy{max-width:520px}
+.hm-hero .hero-actions .button-gold{min-height:52px}
+.hm-hero .hero-actions .button-outline{min-height:44px}
+
+/* Facts and Sprinter feature on one dark band. */
+.hm-feature .fact-strip{margin:0 0 clamp(64px,8vw,112px)}
+.hm-feature .fact strong{font-size:clamp(34px,3.4vw,46px);letter-spacing:-.02em}
+.hm-feature .fact span{font-size:12px;letter-spacing:.06em;color:var(--mist)}
+.hm-feature-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px clamp(48px,7vw,112px);align-items:center}
+.hm-feature-copy .section-title{margin:0 0 28px}
+.hm-feature-copy .lede{max-width:46ch;margin:0 0 24px;color:var(--mist)}
+.hm-feature-copy .text-link{display:inline-flex;align-items:center;min-height:44px;margin-top:0;font-size:15px;color:var(--bone)}
+.hm-feature-media{position:relative;margin:0}
+.hm-feature-media img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 32%;filter:saturate(.72) brightness(.82) contrast(1.05)}
+
+/* Fleet: featured Sprinters card, then three vehicles. */
+.hm-fleet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.hm-fleet-grid .fleet-card.featured{grid-column:1/-1}
+.hm-fleet-grid .fleet-card:not(.featured){display:flex;flex-direction:column}
+.hm-fleet-grid .fleet-card:not(.featured) img{height:auto;aspect-ratio:4/3}
+.hm-fleet-grid .fleet-card:not(.featured) .fleet-card-body{display:flex;flex-direction:column;flex:1;padding:28px}
+.hm-fleet-grid .fleet-card:not(.featured) h3{font-size:clamp(28px,2.6vw,36px)}
+.hm-fleet-grid .fleet-card:not(.featured) .text-link{margin-top:auto}
+.hm-fleet-grid img[src$="g-wagon-enhanced.webp"]{object-position:center 30%}
+.page-home .fleet-meta{font-size:11px;color:var(--mist)}
+.page-home .fleet-card h3{margin:14px 0 10px}
+.page-home .fleet-card-body p{margin:0 0 20px;color:var(--mist)}
+.page-home .fleet-card .text-link{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;color:var(--bone)}
+
+/* How it works: three ruled steps with serif numerals. */
+.hm-how .split{align-items:end}
+.hm-how .lede{margin:0;color:var(--ink)}
+.hm-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:clamp(48px,6vw,72px) 0 0;padding:0;list-style:none;counter-reset:step;border-top:1px solid var(--ink)}
+.hm-steps li{counter-increment:step;padding:28px 32px 8px;border-right:1px solid var(--line)}
+.hm-steps li:first-child{padding-left:0}
+.hm-steps li:last-child{padding-right:0;border-right:0}
+.hm-steps li::before{content:counter(step);display:block;margin-bottom:18px;font:400 34px/1 var(--serif);color:var(--ink)}
+.hm-steps h3{margin:0 0 8px;font:400 25px/1.15 var(--serif)}
+.hm-steps p{max-width:34ch;margin:0;color:var(--muted)}
+
+/* Policies. */
+.hm-policies .section-title{margin:0 0 48px}
+.hm-policies .policy-grid{margin-top:0}
+.hm-policies .policy-card p{color:var(--mist)}
+
+/* Gold band: main action plus email. */
+.hm-cta .fleet-cta-actions{flex:none;margin-top:0}
+
+@media(max-width:900px){
+.hm-feature-grid{grid-template-columns:1fr}
+.hm-feature-media img{aspect-ratio:16/10}
+.hm-fleet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hm-fleet-grid .fleet-card:last-child{grid-column:1/-1}
+.hm-fleet-grid .fleet-card:last-child img{aspect-ratio:16/9}
+.hm-steps{grid-template-columns:1fr}
+.hm-steps li,.hm-steps li:first-child,.hm-steps li:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
+.hm-policies .policy-grid{grid-template-columns:1fr}
+.hm-policies .policy-card{border-right:0}
+}
+@media(max-width:600px){
+.hm-fleet-grid{grid-template-columns:1fr}
+.hm-fleet-grid .fleet-card:last-child img{aspect-ratio:4/3}
+.hm-cta .fleet-cta-actions{width:100%;flex-direction:column;align-items:stretch;gap:8px}
+.hm-cta .button-dark{width:100%}
+.hm-cta .fleet-cta-email{justify-content:center}
 }
