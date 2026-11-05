@@ -1,13 +1,15 @@
 // Vehicle page template: <body class="page-vehicle" data-vehicle="<id from data.js>">.
 // Fills rates, capacities, minimums and the deposit from data.js (window.KH_FLEET / KH_BOOKING),
 // runs the base-rental estimator and builds the "Other vehicles" row.
+// Pages without data-vehicle on <body> (the homepage) only get the [data-field] fill;
+// there each number names its vehicle with a data-vehicle on a parent element.
 // Without JavaScript the static numbers in the HTML stay on the page.
 (() => {
   const fleet = window.KH_FLEET;
   const booking = window.KH_BOOKING || {};
+  if (!fleet) return;
   const pageId = document.body.dataset.vehicle;
-  const vehicle = fleet && fleet[pageId];
-  if (!vehicle) return;
+  const vehicle = fleet[pageId];
 
   const SUNDAY = 0, SATURDAY = 6; // minimumForDay() takes a JS day number
   // "all" is for vehicles whose minimum is the same every day (limo bus, G-Wagon, Escalade).
@@ -38,11 +40,12 @@
   const fill = (root, checkDrift = true) => root.querySelectorAll("[data-field]").forEach(node => {
     const owner = node.closest("[data-vehicle]");
     const v = fleet[owner ? owner.dataset.vehicle : pageId];
-    if (!v) return;
-    const text = fieldText(v, node.dataset.field);
+    const field = node.dataset.field;
+    if (!v && field !== "deposit") return; // the deposit is a booking policy, not tied to a vehicle
+    const text = fieldText(v, field);
     if (text == null) return;
     if (checkDrift && node.textContent.trim() !== text) {
-      console.warn(`${location.pathname} shows "${node.textContent.trim()}" for ${v.name} (${node.dataset.field}); data.js says "${text}".`);
+      console.warn(`${location.pathname} shows "${node.textContent.trim()}" for ${v ? v.name : "booking policy"} (${field}); data.js says "${text}".`);
     }
     node.textContent = text;
   });
@@ -75,10 +78,10 @@
     }
   }
 
-  // 3. Estimator.
+  // 3. Estimator (vehicle pages only).
   const estimate = document.querySelector("[data-estimate]");
   const controls = document.querySelector("[data-estimator-controls]");
-  if (!estimate || !controls) return;
+  if (!vehicle || !estimate || !controls) return;
   const hoursInput = controls.querySelector("[data-hours]");
   const status = document.querySelector("[data-estimate-status]");
   const link = document.querySelector("[data-estimate-link]");
