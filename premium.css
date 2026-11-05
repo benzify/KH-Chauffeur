@@ -1,5 +1,5 @@
 /* Premium editorial art direction layered over the factual site system. */
-:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--max:1320px}
+:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--line-strong:#85857e;--max:1320px}
 body{background:var(--paper);letter-spacing:-.006em}
 body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .site-header{height:94px;padding:0 max(4.5vw,28px);border-bottom:1px solid rgba(255,255,255,.16);background:#0a0d0b}
@@ -370,4 +370,69 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-other-name{padding:14px 14px 4px;font-size:19px}
 .vp-other-rate{padding:0 14px}
 .vp-other-cta{align-self:end;padding:10px 14px 14px}
+}
+
+/* ---------- Request page (body.page-request) ---------- */
+.page-request{--muted:#5f5f58}
+.page-request main :focus-visible{outline-color:var(--ink)}
+.page-request .rq-hero :focus-visible{outline-color:#d5ad62}
+
+/* Compact hero over the Sprinter cabin photo, with the fleet page's dark overlay. */
+.rq-hero{position:relative;min-height:clamp(420px,36vw,520px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,80px);background:linear-gradient(90deg,#0b0e0c 0%,#0b0e0c 46%,rgba(11,14,12,.72) 66%,rgba(11,14,12,.32) 100%),linear-gradient(0deg,rgba(11,14,12,.6),transparent 50%),url('assets/sprinter-interior-enhanced.webp') right 26%/58% auto no-repeat #0b0e0c}
+.rq-hero .breadcrumbs{margin:0;font-size:12px;color:#d2d3ce}
+.rq-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
+.rq-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
+.rq-hero .breadcrumbs a{display:inline-flex;align-items:center;min-height:44px;color:#eeeae1}
+.rq-hero h1{max-width:14ch;margin:24px 0 22px;font-size:clamp(46px,6.2vw,96px);line-height:.92;text-wrap:balance}
+.rq-hero .hero-copy{max-width:48ch;margin:0;font-size:17px;line-height:1.65;color:#d2d3ce}
+.rq-caption{left:auto;right:0}
+
+/* Form and side panel. */
+.rq-section{background:var(--cream);padding:clamp(56px,7vw,96px) 0 clamp(72px,8vw,112px)}
+.rq-layout{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:48px clamp(40px,6vw,96px);align-items:start}
+.rq-required{margin:0 0 20px;font-size:14px;color:var(--muted)}
+.rq-group{min-width:0;margin:0;padding:24px 0 0;border:0;border-top:1px solid var(--ink)}
+.rq-group+.rq-group{margin-top:40px}
+.rq-group legend{float:left;display:flex;align-items:baseline;gap:14px;width:100%;margin:0 0 20px;padding:0;font:400 clamp(24px,2.4vw,30px)/1.1 var(--serif);letter-spacing:-.02em;color:var(--ink)}
+.rq-group legend+*{clear:both}
+.rq-step{min-width:1.5rem;font:400 17px var(--serif);color:var(--muted)}
+.page-request .form-grid{grid-template-columns:1fr 1fr;gap:22px 28px}
+.page-request .form-grid>*{min-width:0}
+.page-request .field{font:500 12px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.page-request .field input,.page-request .field select,.page-request .field textarea{display:block;width:100%;min-width:0;min-height:48px;margin-top:6px;padding:10px 0;border:0;border-bottom:1px solid var(--line-strong);border-radius:0;background:transparent;color:var(--ink);font:400 16px/1.4 var(--sans);letter-spacing:0;text-transform:none}
+.page-request .field textarea{min-height:120px;resize:vertical}
+.page-request .field ::placeholder{color:#64645d;opacity:1}
+.page-request .field :is(input,select,textarea):focus{border-bottom-color:var(--ink)}
+.page-request .field :is(input,select,textarea):focus-visible,.page-request .field :is(input[type="date"],input[type="time"]):focus-within{outline:2px solid var(--ink);outline-offset:6px}
+.page-request .field :is(input,select,textarea):user-invalid{border-bottom:2px solid #8b2c22}
+.page-request .field.full{grid-column:1/-1}
+
+/* Live estimate: the night estimate panel, directly above the submit button. */
+.page-request .rq-estimate{margin:40px 0 0;padding:clamp(24px,3vw,34px);background:#0c0f0d;color:#eeeae1}
+.rq-estimate-vehicle{margin:0 0 18px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#d0c4ae}
+.page-request .estimate-grid{gap:16px 24px}
+.page-request .estimate span{display:block;margin-bottom:6px;font-size:13px;color:#d2d3ce}
+.page-request .estimate span b{font-weight:500}
+.page-request .estimate strong{font:400 clamp(28px,3vw,36px)/1 var(--serif);letter-spacing:-.02em;color:#eeeae1}
+.page-request .estimate-note{margin:18px 0 0;font-size:14px;color:#d2d3ce}
+.rq-submit{width:100%;min-height:56px;margin-top:24px;font-size:14px}
+.page-request .form-status{min-height:28px;margin:14px 0 0;font-size:14px;color:var(--ink)}
+
+.rq-aside{position:sticky;top:24px;padding-top:24px;border-top:1px solid var(--ink)}
+.rq-aside h2{margin:0 0 16px;font:400 clamp(28px,2.8vw,38px)/1.05 var(--serif);letter-spacing:-.03em}
+.rq-aside p{margin:0 0 20px;font-size:15px;color:var(--ink)}
+.rq-checks{margin:0 0 20px;padding:0;list-style:none;border-top:1px solid var(--line)}
+.rq-checks li{padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5;color:var(--ink)}
+.rq-aside a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;overflow-wrap:anywhere}
+
+@media(max-width:900px){
+.rq-layout{grid-template-columns:1fr}
+.rq-aside{position:static}
+}
+@media(max-width:600px){
+.rq-hero{min-height:0;padding:72px 0 64px;background:linear-gradient(90deg,rgba(11,14,12,.9),rgba(11,14,12,.7)),linear-gradient(0deg,rgba(11,14,12,.8),transparent 60%),url('assets/sprinter-interior-enhanced.webp') center 24%/cover #0b0e0c}
+.rq-hero h1{margin:20px 0 18px;font-size:clamp(42px,12vw,54px)}
+.rq-hero .hero-copy{font-size:16px}
+.page-request .form-grid{grid-template-columns:1fr;gap:18px}
+.page-request .estimate-grid{grid-template-columns:1fr}
 }

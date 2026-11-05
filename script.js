@@ -38,7 +38,8 @@ if ("IntersectionObserver" in window) {
   observed.forEach(node => observer.observe(node));
 } else observed.forEach(node => node.classList.add("is-visible"));
 
-const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+// Whole dollars without cents ($1,170), cents only when needed ($487.50), matching the vehicle pages.
+const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: value % 1 ? 2 : 0 }).format(value);
 const parseLocalDate = value => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
   const [year, month, day] = value.split("-").map(Number);
@@ -115,9 +116,9 @@ if (form) {
       `Pickup location: ${values.pickup}`, `Drop-off location: ${values.dropoff}`,
       `Requested rental hours: ${values.hours}`, `Event or trip type: ${values.event_type}`,
       `Notes: ${values.notes || "None provided"}`, "",
-      `Estimated base rental: ${money(result.base)}`,
-      `50% deposit illustration: ${money(result.deposit)}`,
-      `Remaining base balance due upon arrival: ${money(result.balance)}`, "",
+      `Base rental · ${result.billableHours} hour${result.billableHours === 1 ? "" : "s"}: ${money(result.base)}`,
+      `50% deposit: ${money(result.deposit)}`,
+      `Balance on arrival: ${money(result.balance)}`, "",
       "Estimate is subject to availability and confirmed applicable charges."
     ].join("\n");
     status.textContent = "Your email app should open with a prepared inquiry. Review it before sending; no reservation has been confirmed.";
