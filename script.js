@@ -9,10 +9,18 @@ if (menuButton && nav) {
     menuButton.setAttribute("aria-expanded", String(open));
     menuButton.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   });
+  const closeMenu = () => {
+    nav.classList.remove("is-open");
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Open menu");
+  };
   nav.addEventListener("click", event => {
-    if (event.target.matches("a")) {
-      nav.classList.remove("is-open");
-      menuButton.setAttribute("aria-expanded", "false");
+    if (event.target.matches("a")) closeMenu();
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && nav.classList.contains("is-open")) {
+      closeMenu();
+      menuButton.focus();
     }
   });
 }
