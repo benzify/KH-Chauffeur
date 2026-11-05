@@ -13,6 +13,7 @@ This file is an internal launch checklist and is not linked from the public webs
 - Request a second exterior Sprinter photo (the fleet page currently uses the same exterior in the hero and the Maybach row).
 - Request an Escalade ESV photo without other vehicles in frame (the current one has a Sprinter behind it).
 - Confirm exact service-area cities and Metro Atlanta trip boundary.
+- Confirm which event categories to feature (audience split) before adding event-specific copy.
 - Confirm taxes, gratuity status, overtime increments, holiday and overnight rules.
 - Approve cancellation, refund, rescheduling, no-show, damage, and late-payment policies.
 - Select the booking calendar, payment processor, CRM or lead-storage endpoint, SMS provider, and AI receptionist vendor.
