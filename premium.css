@@ -582,3 +582,95 @@ html:not(.js) .reveal{opacity:1;transform:none}
 .ev-hero h1{margin:20px 0 18px;font-size:clamp(42px,12vw,54px)}
 .ev-hero .hero-copy{font-size:16px}
 }
+
+/* ---------- About, FAQs and Service area (body.page-about / .page-faqs / .page-area) ---------- */
+/* Colours from :root tokens only. Reuses .hm-cta / .fleet-cta-* (gold band), .vp-others (fleet row) and .fleet-caption. */
+:is(.page-about,.page-faqs,.page-area){--muted:#5f5f58}
+:is(.page-about,.page-faqs,.page-area) main :focus-visible{outline-color:var(--ink)}
+:is(.page-about,.page-faqs,.page-area) :is(.photo-hero,.vp-other a) :focus-visible,:is(.page-about,.page-faqs,.page-area) .vp-other a:focus-visible{outline-color:var(--focus)}
+:is(.page-about,.page-faqs,.page-area) .cta-band :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+:is(.page-about,.page-faqs,.page-area) .section{padding:clamp(72px,8vw,112px) 0}
+:is(.page-about,.page-faqs,.page-area) .section-title{margin-top:0}
+
+/* Shared photo hero: set the photo with style="--hero-image:url('…');--hero-position:…" on the section. */
+.photo-hero{position:relative;min-height:clamp(460px,40vw,600px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,88px);background:linear-gradient(90deg,var(--night) 0%,rgba(10,12,10,.86) 34%,rgba(10,12,10,.45) 70%,rgba(10,12,10,.2) 100%),linear-gradient(0deg,rgba(10,12,10,.7),transparent 55%),var(--hero-image) var(--hero-position,center)/cover no-repeat var(--night)}
+.photo-hero .breadcrumbs{margin:0;font-size:12px;color:var(--mist)}
+.photo-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
+.photo-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
+.photo-hero .breadcrumbs a{display:inline-flex;align-items:center;min-height:44px;color:var(--bone)}
+.photo-hero h1{max-width:14ch;margin:24px 0 22px;font-size:clamp(46px,6.2vw,96px);line-height:.92;text-wrap:balance}
+.photo-hero .hero-copy{max-width:48ch;margin:0;font-size:17px;line-height:1.65;color:var(--mist)}
+.photo-hero-caption{left:auto;right:0}
+/* Tall photos (Escalade, G-Wagon): smaller, on the right, fading into solid night behind the text. */
+.photo-hero--right{background:linear-gradient(90deg,var(--night) 0%,var(--night) 44%,rgba(10,12,10,.7) 64%,rgba(10,12,10,.3) 100%),linear-gradient(0deg,rgba(10,12,10,.55),transparent 50%),var(--hero-image) var(--hero-position,right center)/58% auto no-repeat var(--night)}
+/* Heading-and-text splits: a modest gap when they stack on phones. */
+:is(.page-about,.page-faqs,.page-area) .split{gap:24px clamp(40px,8vw,120px)}
+:is(.page-about,.page-faqs,.page-area) .split>.section-title{margin-bottom:0}
+/* Smaller section headings on these text pages. */
+:is(.page-about,.page-faqs,.page-area) .section-title{font-size:clamp(40px,5vw,72px);line-height:.98}
+/* About: intro and "How we work" read as one block. */
+.page-about .ab-intro{padding-bottom:clamp(40px,5vw,64px)}
+.page-about .ab-values-section{padding-top:clamp(40px,5vw,64px);background:var(--paper)}
+.page-about .ab-values-section .section-title{margin-bottom:32px}
+.page-about .ab-fleet{background:var(--cream)}
+/* Service area: cities and policy read as one block. */
+.page-area .sa-cities-section{padding-bottom:clamp(40px,5vw,64px)}
+.page-area .sa-policy{padding-top:clamp(40px,5vw,64px);background:var(--paper)}
+
+/* About */
+.ab-intro .split{align-items:start}
+.ab-intro-copy .lede{margin:0 0 20px;color:var(--ink)}
+.ab-intro-copy p{max-width:56ch;margin:0;font-size:16px;color:var(--ink)}
+.ab-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.ab-values article{padding:28px 32px 4px;border-right:1px solid var(--line)}
+.ab-values article:first-child{padding-left:0}
+.ab-values article:last-child{padding-right:0;border-right:0}
+.ab-values h3{margin:0 0 10px;font:400 clamp(24px,2.4vw,30px)/1.1 var(--serif);letter-spacing:-.02em}
+.ab-values p{max-width:34ch;margin:0;color:var(--muted)}
+.ab-fleet-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+
+/* FAQs: intro on the left, ruled accordions on the right. */
+.fq-layout{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:40px clamp(48px,7vw,112px);align-items:start}
+.fq-aside{position:sticky;top:24px;padding-top:20px;border-top:1px solid var(--ink)}
+.fq-aside-text{margin:0 0 8px;font:400 clamp(24px,2.4vw,30px)/1.15 var(--serif);letter-spacing:-.02em;color:var(--ink)}
+.fq-email{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;overflow-wrap:anywhere}
+.fq-list{border-top:1px solid var(--ink)}
+.fq-list details{border-bottom:1px solid var(--line)}
+.fq-list summary{position:relative;display:flex;align-items:center;min-height:64px;padding:18px 48px 18px 0;font:400 clamp(21px,2vw,26px)/1.25 var(--serif);letter-spacing:-.01em;color:var(--ink);list-style:none;cursor:pointer}
+.fq-list summary::-webkit-details-marker{display:none}
+.fq-list summary::before,.fq-list summary::after{content:"";position:absolute;right:8px;top:50%;width:16px;height:1px;background:var(--ink);transition:transform .25s ease}
+.fq-list summary::after{transform:rotate(90deg)}
+.fq-list details[open] summary::after{transform:rotate(0)}
+.fq-list summary:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.fq-list details p{max-width:65ch;margin:0;padding:0 48px 24px 0;font-size:16px;line-height:1.7;color:var(--ink)}
+
+/* Service area */
+.sa-cities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink)}
+.sa-city{padding:32px 40px 8px 0;border-right:1px solid var(--line)}
+.sa-city:last-child{padding:32px 0 8px 40px;border-right:0}
+.sa-city h2{margin:0 0 14px;font:400 clamp(40px,5vw,72px)/1 var(--serif);letter-spacing:-.04em}
+.sa-city p{max-width:44ch;margin:0;font-size:16px;color:var(--ink)}
+.sa-policy .split{align-items:start}
+.sa-policy-copy .lede{margin:0 0 20px;color:var(--ink)}
+.sa-policy-copy p{max-width:56ch;margin:0;color:var(--ink)}
+
+@media(prefers-reduced-motion:reduce){.fq-list summary::before,.fq-list summary::after{transition:none}}
+@media(max-width:1024px){
+.ab-fleet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+.ab-values,.sa-cities{grid-template-columns:1fr}
+.ab-values article,.ab-values article:first-child,.ab-values article:last-child,.sa-city,.sa-city:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
+.ab-values article:last-child,.sa-city:last-child{border-bottom:0}
+.ab-fleet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fq-layout{grid-template-columns:1fr}
+.fq-aside{position:static}
+}
+@media(max-width:600px){
+.photo-hero,.photo-hero--right{min-height:0;padding:72px 0 64px;background:linear-gradient(0deg,rgba(10,12,10,.92) 25%,rgba(10,12,10,.62) 70%,rgba(10,12,10,.5)),var(--hero-image) var(--hero-mobile-position,var(--hero-position,center))/cover no-repeat var(--night)}
+.photo-hero h1{margin:20px 0 18px;font-size:clamp(40px,11.5vw,54px)}
+.photo-hero .hero-copy{font-size:16px}
+.ab-fleet-grid{grid-template-columns:1fr}
+.fq-list summary{padding-right:40px}
+.fq-list details p{padding-right:0}
+}
