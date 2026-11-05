@@ -6,7 +6,10 @@ This file is an internal launch checklist and is not linked from the public webs
 - Confirm client booking phone and SMS lead-alert recipient.
 - Confirm office address, public-facing eligibility, and business hours.
 - Confirm exact Maybach versus Executive Sprinter image assignments and vehicle counts.
-- Confirm Escalade ESV and G-Wagon passenger capacities.
+- Confirm Sprinter amenities, luggage capacity and model year (Maybach and Executive).
+- Confirm limousine bus amenities, luggage capacity and vehicle count.
+- Confirm Escalade ESV and G-Wagon passenger and luggage capacities.
+- Confirm ownership and approved use of the client-supplied vehicle photos (see ASSET_PROVENANCE.md).
 - Request a second exterior Sprinter photo (the fleet page currently uses the same exterior in the hero and the Maybach row).
 - Request an Escalade ESV photo without other vehicles in frame (the current one has a Sprinter behind it).
 - Confirm exact service-area cities and Metro Atlanta trip boundary.

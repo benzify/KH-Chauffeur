@@ -6,6 +6,7 @@
 - `sprinter-interior-enhanced.png` — faithful enhancement of `1000040901.jpg.jpeg`; exact Sprinter trim assignment is pending.
 - `limo-bus-enhanced.png` — faithful enhancement of `2ff628b9-5572-4125-8d33-084875389034-1_all_4308.jpg.jpeg`.
 - `limo-bus-exterior.webp` — 3:2 crop (918×612) of the top photo in `limo-bus-enhanced.webp`, used on the fleet page. No other change.
+- `limo-bus-side.webp` — 3:2 crop (939×626) of the bottom photo in `limo-bus-enhanced.webp`, used in the limousine bus page gallery. No other change.
 - `escalade-enhanced.png` — faithful enhancement of `2ff628b9-5572-4125-8d33-084875389034-1_all_6323.jpg.jpeg`.
 - `g-wagon-enhanced.png` — faithful enhancement of `2ff628b9-5572-4125-8d33-084875389034-1_all_10995.jpg.jpeg`.
 

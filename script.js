@@ -87,8 +87,12 @@ if (form) {
   };
 
   [vehicleSelect, dateInput, hoursInput].forEach(input => input.addEventListener("input", updateEstimate));
-  const preset = new URLSearchParams(location.search).get("vehicle");
+  const params = new URLSearchParams(location.search);
+  const preset = params.get("vehicle");
   if (preset && window.KH_FLEET[preset]) vehicleSelect.value = preset;
+  // Hours carried over from a vehicle page estimator, e.g. request.html?vehicle=maybach-sprinter&hours=6
+  const presetHours = Number(params.get("hours"));
+  if (Number.isInteger(presetHours) && presetHours >= 1 && presetHours <= 24) hoursInput.value = String(presetHours);
   updateEstimate();
 
   form.addEventListener("submit", event => {

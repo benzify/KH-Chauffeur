@@ -245,3 +245,129 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-cta .container{grid-template-columns:1fr;gap:32px}
 .fleet-cta h2{max-width:16ch}
 }
+
+/* ---------- Vehicle page template (body.page-vehicle, used by maybach-sprinter.html) ---------- */
+/* Reuses the fleet page's controls (.fleet-segment), captions (.fleet-caption) and gold band (.fleet-cta). */
+.page-vehicle{--muted:#5f5f58}
+.page-vehicle main :focus-visible{outline-color:var(--ink)}
+.page-vehicle .vp-hero :focus-visible,.page-vehicle .vp-estimator :focus-visible,.page-vehicle .vp-other a:focus-visible{outline-color:#d5ad62}
+.page-vehicle .fleet-cta :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+
+/* Hero: the panel sets the height; the photo fills its column at a landscape crop, lighter than before. */
+.vp-hero{grid-template-columns:minmax(0,1.45fr) minmax(360px,.85fr);min-height:0}
+.vp-hero-media{position:relative;margin:0;min-height:clamp(460px,44vw,700px);background:var(--night)}
+.vp-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% center;filter:saturate(.8) brightness(.86) contrast(1.04)}
+.vp-panel{display:flex;flex-direction:column;justify-content:center;padding:clamp(48px,5vw,80px) clamp(28px,4vw,64px)}
+.vp-panel h1{margin:0 0 20px;font-size:clamp(44px,4.4vw,72px);line-height:.95;text-wrap:balance}
+.vp-panel .vehicle-rate{margin:0 0 28px;font-size:clamp(40px,3.6vw,52px)}
+.vp-panel .vehicle-rate small{color:#d2d3ce}
+.vp-specs{margin:0 0 32px;border-top:1px solid rgba(255,255,255,.18)}
+.vp-specs div{display:grid;grid-template-columns:7rem 1fr;gap:16px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:14px;line-height:1.5}
+.vp-specs dt{font:600 11px/1.9 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#d0c4ae}
+.vp-specs dd{margin:0;color:#eeeae1}
+.vp-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.vp-actions .button{min-height:52px}
+.vp-text-link{display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:#eeeae1;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.vp-text-link:hover{color:#fff}
+
+/* Overview: heading and paragraph left, "At a glance" right. */
+.vp-overview{background:var(--cream);padding:clamp(72px,8vw,112px) 0}
+.vp-overview-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px clamp(40px,6vw,96px);align-items:start}
+.vp-overview-copy h2{max-width:16ch;margin:0 0 24px;font:400 clamp(36px,4.4vw,60px)/1.02 var(--serif);letter-spacing:-.035em;text-wrap:balance}
+.vp-overview-copy .lede{max-width:52ch;margin:0;font-size:clamp(17px,1.4vw,19px);color:var(--ink)}
+.vp-glance{padding-top:18px;border-top:1px solid var(--ink)}
+.vp-glance-title{margin:0 0 6px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.vp-glance-list{margin:0}
+.vp-glance-list div{display:grid;grid-template-columns:minmax(8rem,40%) 1fr;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5}
+.vp-glance-list dt{color:var(--muted)}
+.vp-glance-list dd{margin:0;color:var(--ink)}
+.vp-glance-list dd[data-field]{font:400 22px/1.1 var(--serif);letter-spacing:-.01em}
+
+/* Gallery: two photos at one ratio. */
+.vp-gallery{background:var(--paper);padding:clamp(56px,6vw,88px) 0}
+.vp-gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vp-photo{position:relative;margin:0}
+.vp-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.75) brightness(.88) contrast(1.04);background:var(--night)}
+.vp-photo img[src$="sprinter-exterior-enhanced.webp"]{object-position:74% center}
+.vp-photo img[src$="sprinter-interior-enhanced.webp"]{object-position:center 32%}
+/* Pages without a gallery (one photo): keep the paper / linen alternation. */
+.vp-overview + .vp-pricing{background:var(--paper)}
+.vp-overview + .vp-pricing + .vp-others{background:var(--cream)}
+/* Per-photo crops for the other vehicle pages. */
+.vp-hero-media img[src$="limo-bus-exterior.webp"]{object-position:28% center}
+.vp-hero-media img[src$="g-wagon-enhanced.webp"]{object-position:center 30%}
+.vp-photo img[src$="limo-bus-exterior.webp"]{object-position:20% center}
+.vp-photo img[src$="limo-bus-side.webp"]{object-position:center 62%}
+
+/* How pricing works: intro left, night estimate panel right. */
+.vp-pricing{background:var(--cream);padding:clamp(72px,8vw,112px) 0}
+.vp-pricing-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px clamp(40px,6vw,96px);align-items:start}
+.vp-pricing-intro h2{margin:0 0 20px;font:400 clamp(34px,4vw,54px)/1.02 var(--serif);letter-spacing:-.035em}
+.vp-pricing-intro .lede{max-width:40ch;margin:0 0 16px;font-size:17px;color:var(--ink)}
+.vp-note{max-width:44ch;margin:0;font-size:14px;color:var(--muted)}
+.vp-estimator{padding:clamp(24px,3vw,40px);background:#0c0f0d;color:#eeeae1}
+.vp-estimator-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px 32px;margin-bottom:28px}
+.vp-estimator-controls[hidden]{display:none}
+.vp-estimator .fleet-control-label{color:#d0c4ae}
+.vp-estimator .fleet-segment{border-color:rgba(255,255,255,.5)}
+.vp-estimator .fleet-segment button{border-right-color:rgba(255,255,255,.5);color:#eeeae1}
+.vp-estimator .fleet-segment button:last-child{border-right:0}
+.vp-estimator .fleet-segment button:hover{background:rgba(255,255,255,.08)}
+.vp-estimator .fleet-segment button[aria-pressed="true"]{background:#eeeae1;color:var(--night)}
+.vp-estimator .fleet-segment button:focus-visible{outline-color:#d5ad62}
+.vp-hours input{width:8rem;min-height:44px;margin:0;padding:0 12px;border:1px solid rgba(255,255,255,.5);border-radius:0;background:transparent;color:#eeeae1;font:500 16px var(--sans)}
+.vp-hours input:focus-visible{outline:3px solid #d5ad62;outline-offset:2px}
+.vp-estimate{width:100%;border-collapse:collapse;font-variant-numeric:lining-nums tabular-nums}
+.vp-estimate th,.vp-estimate td{padding:14px 12px 14px 0;border-bottom:1px solid rgba(255,255,255,.16);text-align:left;vertical-align:baseline}
+.vp-estimate thead th{font:500 13px var(--sans);color:#d2d3ce;border-bottom-color:rgba(255,255,255,.5)}
+.vp-estimate thead td{border-bottom-color:rgba(255,255,255,.5)}
+.vp-estimate tbody th{font:400 14px var(--sans);color:#d2d3ce}
+.vp-estimate tbody td{font:400 clamp(24px,2.4vw,32px)/1 var(--serif);letter-spacing:-.02em;color:#eeeae1}
+.vp-estimate[data-day="weekday"] [data-col="weekend"],.vp-estimate[data-day="weekend"] [data-col="weekday"]{display:none}
+.vp-estimate-status{min-height:1.5em;margin:14px 0 0;font-size:14px;color:#d0c4ae}
+.vp-estimate-link{min-height:52px;margin-top:20px}
+
+/* Other vehicles: slim cards built from data.js. */
+.vp-others{background:var(--paper);padding:clamp(72px,8vw,104px) 0}
+.vp-section-title{margin:0 0 32px;font:400 clamp(32px,3.6vw,48px)/1.05 var(--serif);letter-spacing:-.03em}
+.vp-others-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.vp-other a{display:flex;flex-direction:column;height:100%;background:#111411;color:#eeeae3;text-decoration:none}
+.vp-other img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.68) brightness(.8) contrast(1.06);transition:filter .6s ease}
+.vp-other a:hover img{filter:saturate(.82) brightness(.9)}
+.vp-other img[src$="sprinter-interior-enhanced.webp"]{object-position:center 30%}
+.vp-other img[src$="limo-bus-exterior.webp"]{object-position:12% center}
+.vp-other img[src$="g-wagon-enhanced.webp"]{object-position:center 12%}
+.vp-other img[src$="escalade-enhanced.webp"]{object-position:center 76%}
+.vp-other-name{padding:20px 20px 6px;font:400 22px/1.15 var(--serif);letter-spacing:-.01em}
+.vp-other-rate{padding:0 20px;font-size:14px;color:#d2d3ce}
+.vp-other-cta{margin-top:auto;padding:18px 20px 20px;font-size:13px;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+
+@media(max-width:1024px){
+.vp-others-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+.vp-hero{grid-template-columns:1fr}
+.vp-hero-media{min-height:0;aspect-ratio:16/10}
+.vp-panel{border-left:0}
+.vp-overview-grid,.vp-pricing-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+.vp-panel{padding:44px 5vw 52px}
+.vp-specs div{grid-template-columns:1fr;gap:2px}
+.vp-actions{flex-direction:column;align-items:stretch}
+.vp-actions .button{width:100%}
+.vp-actions .vp-text-link{justify-content:center}
+.vp-gallery-grid{grid-template-columns:1fr}
+.vp-estimator-controls{flex-direction:column;align-items:stretch}
+.vp-estimator .fleet-control,.vp-estimator .fleet-segment{width:100%}
+.vp-estimator .fleet-segment button{flex:1 1 0}
+.vp-hours input{width:100%}
+.vp-estimate th,.vp-estimate td{padding-right:8px}
+.vp-estimate-link{width:100%}
+.vp-others-grid{grid-template-columns:1fr}
+.vp-other a{display:grid;grid-template-columns:38% 1fr;grid-template-rows:auto auto 1fr}
+.vp-other img{grid-row:1 / 4;height:100%;min-height:128px;aspect-ratio:auto}
+.vp-other-name{padding:14px 14px 4px;font-size:19px}
+.vp-other-rate{padding:0 14px}
+.vp-other-cta{align-self:end;padding:10px 14px 14px}
+}
