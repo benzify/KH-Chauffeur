@@ -864,3 +864,12 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 @media(max-width:900px){
 .main-nav{padding-left:max(5vw,env(safe-area-inset-left,0px));padding-right:max(5vw,env(safe-area-inset-right,0px))}
 }
+
+/* Footer credit link (© line). On touch screens it gets a 44px-tall target. */
+.site-footer .footer-credit{display:inline;margin:0;color:#eeeae1;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;transition:color var(--dur-fast) var(--ease-out)}
+.site-footer .footer-credit:hover{color:#fff}
+.site-footer .footer-credit:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+@media(pointer:coarse){.site-footer .footer-credit{display:inline-flex;align-items:center;min-height:44px;min-width:44px}}
+/* "Website by Benzify" stays on one line; plain wrapping so balancing never strands the link. */
+.site-footer .footer-bottom .nowrap{white-space:nowrap}
+.site-footer .footer-bottom p:has(.footer-credit){text-wrap:wrap}
