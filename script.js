@@ -27,16 +27,80 @@ if (menuButton && nav) {
 
 $$('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
 
-const observed = $$("[data-reveal]");
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (entry.isIntersecting) {
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+// Pinned header: its background layer fades in after 40px of scrolling.
+const header = $(".site-header");
+if (header) {
+  let ticking = false;
+  const setScrolled = () => { header.classList.toggle("is-scrolled", scrollY > 40); ticking = false; };
+  addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(setScrolled);
+  }, { passive: true });
+  setScrolled();
+}
+
+// Fade-and-rise for .reveal and the children of .reveal-stagger. Each plays once.
+// Items that come into view together are staggered in page order, up to 6 steps.
+// Runs after every page script, because vehicle.js rebuilds the "Other vehicles" cards.
+const startReveals = () => {
+  const nodes = [...$$(".reveal"), ...$$(".reveal-stagger > :not(.sr-only)")];
+  if (!("IntersectionObserver" in window) || reduceMotion.matches) {
+    nodes.forEach(node => node.classList.add("is-visible"));
+    return;
+  }
+  const inPageOrder = (a, b) => (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+  const observer = new IntersectionObserver(entries => {
+    let step = 0;
+    entries.filter(entry => entry.isIntersecting).sort(inPageOrder).forEach(entry => {
+      entry.target.style.setProperty("--i", String(Math.min(step++, 5)));
       entry.target.classList.add("is-visible");
       observer.unobserve(entry.target);
-    }
-  }), { threshold: 0.08 });
-  observed.forEach(node => observer.observe(node));
-} else observed.forEach(node => node.classList.add("is-visible"));
+    });
+  }, { threshold: 0.15 });
+  nodes.forEach(node => observer.observe(node));
+  const showNow = (target, instant) => nodes.forEach(node => {
+    if (node.classList.contains("is-visible") || !node.contains(target)) return;
+    node.style.setProperty("--i", "0");
+    if (instant) node.style.transition = "none";
+    node.classList.add("is-visible");
+    observer.unobserve(node);
+    if (instant) requestAnimationFrame(() => node.style.removeProperty("transition"));
+  });
+  // Keyboard focus reveals its section at once (CSS :focus-within) and keeps it revealed after.
+  document.addEventListener("focusin", event => showNow(event.target, false));
+  // In-page links: show the target in its final place first, so the jump lands below the header.
+  const showHashTarget = hash => {
+    const target = hash.length > 1 && document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (target) showNow(target, true);
+  };
+  document.addEventListener("click", event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (link) showHashTarget(link.getAttribute("href"));
+  });
+  if (location.hash) {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    showHashTarget(location.hash);
+    if (target) target.scrollIntoView();
+  }
+};
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startReveals);
+else startReveals();
+
+// Price crossfade: swap the text and fade the new value in. No counting-up numbers.
+window.khSwapText = (node, value) => {
+  if (!node || node.textContent === value) return;
+  node.textContent = value;
+  if (reduceMotion.matches) return;
+  node.classList.remove("is-swapping");
+  void node.offsetWidth; // restart the fade
+  node.classList.add("is-swapping");
+};
+document.addEventListener("animationend", event => {
+  if (event.animationName === "kh-swap") event.target.classList.remove("is-swapping");
+});
 
 // Whole dollars without cents ($1,170), cents only when needed ($487.50), matching the vehicle pages.
 const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: value % 1 ? 2 : 0 }).format(value);
@@ -75,12 +139,14 @@ if (form) {
       estimateBox.hidden = true;
       return null;
     }
+    // Prices crossfade only when they change on screen, not when the estimate first appears.
+    const setPrice = estimateBox.hidden ? (node, value) => { node.textContent = value; } : khSwapText;
     estimateBox.hidden = false;
     $("[data-estimate-vehicle]", estimateBox).textContent = result.vehicle.name;
     $("[data-estimate-hours]", estimateBox).textContent = `${result.billableHours} hour${result.billableHours === 1 ? "" : "s"}`;
-    $("[data-estimate-base]", estimateBox).textContent = money(result.base);
-    $("[data-estimate-deposit]", estimateBox).textContent = money(result.deposit);
-    $("[data-estimate-balance]", estimateBox).textContent = money(result.balance);
+    setPrice($("[data-estimate-base]", estimateBox), money(result.base));
+    setPrice($("[data-estimate-deposit]", estimateBox), money(result.deposit));
+    setPrice($("[data-estimate-balance]", estimateBox), money(result.balance));
     $("[data-estimate-note]", estimateBox).textContent = result.requestedHours < result.minimum
       ? `${result.minimum}-hour minimum applied for this vehicle and date.`
       : `Calculated at ${money(result.vehicle.rate)} per hour.`;

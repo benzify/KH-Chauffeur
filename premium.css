@@ -674,3 +674,88 @@ html:not(.js) .reveal{opacity:1;transform:none}
 .fq-list summary{padding-right:40px}
 .fq-list details p{padding-right:0}
 }
+
+/* ---------- Motion (all pages) ----------
+   Classes: .reveal (one element), .reveal-stagger (its children), .hero-fade (photo hero in CSS
+   backgrounds), .hero-fade-media (hero <img> wrapper), .photo-zoom (photo hover), .photo-settle (photo comes to rest on reveal), .is-swapping (price crossfade).
+   Hidden starting states only apply once <html> has the .js class; reduced motion shows everything at once. */
+:root{--ease-out:cubic-bezier(.22,.61,.36,1);--ease-in-out:cubic-bezier(.65,0,.35,1);--dur-fast:180ms;--dur-base:420ms;--dur-slow:800ms;--dur-hero:900ms;--dur-settle:1200ms;--rise:20px;--stagger:70ms;--header-h:94px;interpolate-size:allow-keywords}
+@media(max-width:900px){:root{--header-h:78px}}
+
+/* Pinned header. In-page links and keyboard focus land below it. */
+html{scroll-padding-top:var(--header-h)}
+[id]{scroll-margin-top:16px}
+.site-header{position:sticky;top:0;isolation:isolate}
+.site-header:before{content:"";position:absolute;inset:0 0 -1px;z-index:-1;background:var(--night);border-bottom:1px solid var(--line-dark);opacity:0;transition:opacity var(--dur-base) var(--ease-out);pointer-events:none}
+.site-header.is-scrolled:before{opacity:1}
+.rq-aside,.fq-aside{top:calc(var(--header-h) + 24px)}
+
+/* Nav: underline grows from the left. The current page keeps a static underline. */
+.main-nav a{position:relative;text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+.main-nav a:after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform var(--dur-fast) var(--ease-out)}
+.main-nav a:hover,.main-nav a:focus-visible{color:#fff}
+.main-nav a:hover:after,.main-nav a:focus-visible:after,.main-nav a[aria-current="page"]:after{transform:scaleX(1)}
+.main-nav a[aria-current="page"]{text-decoration:none}
+@media(max-width:900px){.main-nav a:after{bottom:6px;right:auto;width:100%;max-width:100%}}
+
+/* Buttons and links: colour and underline changes only. */
+.button,.nav-cta,.site-footer .footer-col a{transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+.text-link,.vp-text-link,.vp-other-cta,.fleet-cta-email,.fq-email{transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+.button-gold:hover{background:#f7f5ef}
+.button-outline:hover{border-color:#eeeae1}
+.nav-cta:hover{border-color:#fff}
+
+/* Fade-and-rise. Visible by default; hidden only while JS is about to reveal it. */
+.reveal{opacity:1;transform:none}
+.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:0;transform:translateY(var(--rise));transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);transition-delay:calc(var(--i,0) * var(--stagger))}
+.js .reveal.is-visible,.js .reveal-stagger>.is-visible{opacity:1;transform:none}
+/* Keyboard focus never waits for a reveal: anything holding focus shows at once. */
+.js .reveal:focus-within,.js .reveal-stagger>:focus-within{opacity:1;transform:none;transition:none}
+
+/* Hero photo: a dark layer under the text fades away, so only the photo appears to fade in. */
+.hero-fade{position:relative;isolation:isolate}
+.hero-fade:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night);opacity:0;pointer-events:none}
+.hero-fade-media{position:relative}
+.hero-fade-media:after{content:"";position:absolute;inset:0;z-index:1;background:var(--night);opacity:0;pointer-events:none}
+@keyframes kh-hero-fade{from{opacity:1}to{opacity:0}}
+@keyframes kh-swap{from{opacity:0}to{opacity:1}}
+@keyframes kh-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media(prefers-reduced-motion:no-preference){
+.hero-fade:before,.hero-fade-media:after{animation:kh-hero-fade var(--dur-hero) var(--ease-out) both}
+.is-swapping{animation:kh-swap var(--dur-base) var(--ease-out)}
+/* FAQs: the answer fades and rises on open; height and close are smooth where ::details-content is supported. */
+.fq-list details[open]>:not(summary){animation:kh-rise var(--dur-base) var(--ease-out)}
+.fq-list details::details-content{block-size:0;overflow:clip;opacity:0;transition:block-size var(--dur-base) var(--ease-in-out),opacity var(--dur-base) var(--ease-out),content-visibility var(--dur-base) allow-discrete}
+.fq-list details[open]::details-content{block-size:auto;opacity:1}
+/* Soft cross-page fade (Chrome/Edge 126+, Safari 18.2+). The header stays put. */
+@view-transition{navigation:auto;types:page}
+.site-header{view-transition-name:site-header}
+html:active-view-transition-type(page)::view-transition-old(root),html:active-view-transition-type(page)::view-transition-new(root){animation-duration:320ms;animation-timing-function:var(--ease-out)}
+}
+/* Filter and day toggles (same-page View Transitions). */
+::view-transition-old(root),::view-transition-new(root){animation-duration:var(--dur-base);animation-timing-function:var(--ease-out)}
+
+/* Photo hover: gentle zoom, desktop pointers only. */
+.photo-zoom{overflow:clip}
+.photo-zoom img{transition:filter .6s var(--ease-out),transform .6s var(--ease-out)}
+.fleet-card:hover img{transform:none}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+.photo-zoom:hover img{transform:scale(1.015)}
+.fleet-row-media.photo-zoom:hover img,.vp-photo.photo-zoom:hover img,.ev-expect-media.photo-zoom:hover img,.hm-feature-media.photo-zoom:hover img{filter:saturate(.8) brightness(.92) contrast(1.04)}
+.photo-settle.photo-zoom:hover img{transition-duration:.6s}
+}
+
+/* Photo settle: the photo starts at 1.04 and comes to rest as its section reveals.
+   The wrapper clips it (.photo-zoom), so nothing grows outside the frame. */
+@media(prefers-reduced-motion:no-preference){
+.photo-settle img{transition:filter .6s var(--ease-out),transform var(--dur-settle) var(--ease-out)}
+.js .reveal:not(.is-visible) .photo-settle img,.js .reveal-stagger>:not(.is-visible) .photo-settle img,
+.js .photo-settle.reveal:not(.is-visible) img,.js .reveal-stagger>.photo-settle:not(.is-visible) img{transform:scale(1.04)}
+}
+
+@media(prefers-reduced-motion:reduce){
+.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:1;transform:none;transition:none}
+.site-header:before,.main-nav a:after{transition:none}
+}
+@media print{.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:1;transform:none}.site-header{position:static}}

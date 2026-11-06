@@ -100,8 +100,10 @@
     return Number.isInteger(n) && n >= 1 && n <= 24 ? n : null;
   };
 
-  const render = () => {
+  // animate: crossfade the prices (hours typed). Day changes already use a View Transition.
+  const render = (animate = false) => {
     const hours = requestedHours();
+    const swap = animate && window.khSwapText ? window.khSwapText : (node, value) => { node.textContent = value; };
     estimate.dataset.day = state.day || "both";
     const applied = [];
     for (const day of columns) {
@@ -109,7 +111,7 @@
       const billable = Math.max(hours || 0, min);
       const base = vehicle.rate * billable;
       const deposit = base * depositRate;
-      const set = (key, value) => { const node = estimate.querySelector(`[data-out="${key}-${day}"]`); if (node) node.textContent = value; };
+      const set = (key, value) => { const node = estimate.querySelector(`[data-out="${key}-${day}"]`); if (node) swap(node, value); };
       set("hours", String(billable));
       set("base", money(base));
       set("deposit", money(deposit));
@@ -140,7 +142,7 @@
       state.day = active ? null : button.dataset.day;
     });
   }));
-  hoursInput.addEventListener("input", render);
+  hoursInput.addEventListener("input", () => render(true));
 
   render();
 })();
