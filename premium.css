@@ -1,4 +1,6 @@
-/* Premium editorial art direction layered over the factual site system. */
+/* Premium editorial art direction layered over the factual site system.
+   Breakpoints (use only these): max-width 400px small phones · 600px phones · 900px tablets (nav collapses) · 1200px small desktops.
+   Short landscape phones: (max-height:500px) and (orientation:landscape). */
 :root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--line-strong:#85857e;--mist:#d2d3ce;--bone:#eeeae1;--champagne:#d0c4ae;--focus:#d5ad62;--line-dark:rgba(255,255,255,.2);--max:1320px}
 body{background:var(--paper);letter-spacing:-.006em}
 body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -46,8 +48,8 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .nav-cta{display:inline-flex;margin-left:10px;padding:0 14px;border:1px solid rgba(255,255,255,.48);font-size:12px}
 .main-nav a{display:flex;align-items:center;min-height:44px;font-size:15px}
 }
-/* Short "Request" label up to 480px so the wordmark never wraps beside the full label. */
-@media(max-width:480px){
+/* Short "Request" label on phones (up to 600px) so the wordmark never wraps beside the full label. */
+@media(max-width:600px){
 .nav-cta-full{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .nav-cta-short{display:inline}
 }
@@ -73,7 +75,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .site-footer .footer-col a.footer-cta:hover{background:#eeeae1;color:var(--night);text-decoration:none}
 .site-footer .footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 32px;margin:0;padding:24px 0 32px;letter-spacing:.01em;border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#d2d3ce}
 .site-footer .footer-bottom p{margin:0;text-wrap:balance}
-@media(max-width:1024px),(pointer:coarse){
+@media(max-width:1200px),(pointer:coarse){
 .site-footer .footer-col a{min-height:44px}
 .fleet-table tbody th a{display:inline-flex;align-items:center;min-height:44px}
 }
@@ -207,7 +209,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-rate{font-size:36px;margin-bottom:22px}
 .fleet-best{font-size:16px;margin-bottom:20px}
 }
-@media(max-width:768px){
+@media(max-width:900px){
 .fleet-terms.policy-grid{grid-template-columns:1fr}
 .fleet-terms .policy-card,.fleet-terms .policy-card:first-of-type,.fleet-terms .policy-card:last-child{padding:22px 0;border-right:0;border-bottom:1px solid var(--line)}
 .fleet-terms .policy-card:last-child{border-bottom:0}
@@ -223,20 +225,6 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-controls{gap:18px}
 .fleet-control,.fleet-segment{width:100%}
 .fleet-segment button{flex:1 1 0;padding:0 8px}
-.fleet-table-wrap{overflow:visible}
-.fleet-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.fleet-table,.fleet-table tbody,.fleet-table tr,.fleet-table th,.fleet-table td{display:block}
-.fleet-table tbody{display:grid;gap:12px}
-.fleet-table tr{padding:16px 18px 4px;border:1px solid var(--line)}
-.fleet-table th,.fleet-table td{padding:6px 0;border:0}
-.fleet-table tbody th{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:6px;padding:0 0 12px;border-bottom:1px solid var(--line)}
-.fleet-table tbody th .fleet-fit{margin-left:0}
-.fleet-table td{display:grid;grid-template-columns:minmax(8.5rem,44%) 1fr;gap:12px;align-items:baseline}
-.fleet-table td::before{content:attr(data-label);font:400 14px var(--sans);letter-spacing:0;color:var(--muted)}
-.fleet-table td[data-field="rate"],.fleet-table td[data-col]{font-size:24px}
-.fleet-table td.fleet-table-request{display:block;margin-top:6px;padding:0;border-top:1px solid var(--line);text-align:left}
-.fleet-table td.fleet-table-request::before{content:none}
-.fleet-table-request a{min-height:48px}
 .fleet-cta-actions{flex-direction:column;align-items:stretch;gap:8px}
 .fleet-cta .button-dark{width:100%}
 .fleet-cta-email{justify-content:center}
@@ -244,6 +232,26 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 @media(max-width:900px){
 .fleet-cta .container{grid-template-columns:1fr;gap:32px}
 .fleet-cta h2{max-width:16ch}
+}
+/* Compare table as cards up to 900px (seven columns don't fit a tablet): 2 per row on tablets, 1 on phones. */
+@media(max-width:900px){
+.fleet-table-wrap{overflow:visible}
+.fleet-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.fleet-table,.fleet-table tbody,.fleet-table tr,.fleet-table th,.fleet-table td{display:block}
+.fleet-table tbody{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fleet-table tr{padding:16px 18px 4px;border:1px solid var(--line)}
+.fleet-table th,.fleet-table td{padding:6px 0;border:0}
+.fleet-table tbody th{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:6px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+.fleet-table tbody th .fleet-fit{margin-left:0}
+.fleet-table td{display:grid;grid-template-columns:minmax(8.5rem,44%) 1fr;gap:12px;align-items:baseline;text-wrap:balance}
+.fleet-table td::before{content:attr(data-label);font:400 14px var(--sans);letter-spacing:0;color:var(--muted);text-wrap:balance}
+.fleet-table td[data-field="rate"],.fleet-table td[data-col]{font-size:24px}
+.fleet-table td.fleet-table-request{display:block;margin-top:6px;padding:0;border-top:1px solid var(--line);text-align:left}
+.fleet-table td.fleet-table-request::before{content:none}
+.fleet-table-request a{min-height:48px}
+}
+@media(max-width:600px){
+.fleet-table tbody{grid-template-columns:1fr}
 }
 
 /* ---------- Vehicle page template (body.page-vehicle, used by maybach-sprinter.html) ---------- */
@@ -295,7 +303,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-overview + .vp-pricing + .vp-others{background:var(--cream)}
 /* Per-photo crops for the other vehicle pages. */
 .vp-hero-media img[src$="limo-bus-exterior.webp"]{object-position:28% center}
-.vp-hero-media img[src$="g-wagon-enhanced.webp"]{object-position:center 30%}
+.vp-hero-media img[src$="g-wagon-enhanced.webp"]{object-position:center 15%}
 .vp-photo img[src$="limo-bus-exterior.webp"]{object-position:20% center}
 .vp-photo img[src$="limo-bus-side.webp"]{object-position:center 62%}
 
@@ -342,7 +350,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-other-rate{padding:0 20px;font-size:14px;color:#d2d3ce}
 .vp-other-cta{margin-top:auto;padding:18px 20px 20px;font-size:13px;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
 
-@media(max-width:1024px){
+@media(max-width:900px){
 .vp-others-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:900px){
@@ -365,8 +373,9 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-estimate th,.vp-estimate td{padding-right:8px}
 .vp-estimate-link{width:100%}
 .vp-others-grid{grid-template-columns:1fr}
-.vp-other a{display:grid;grid-template-columns:38% 1fr;grid-template-rows:auto auto 1fr}
-.vp-other img{grid-row:1 / 4;height:100%;min-height:128px;aspect-ratio:auto}
+.vp-other a{display:grid;grid-template-columns:38% 1fr;grid-template-rows:auto auto 1fr;min-height:128px}
+/* height:0 + min-height:100% lets the text set each card's height, so tall photos (Sprinter cabin, Escalade) can't stretch their card. */
+.vp-other img{grid-row:1 / 4;height:0;min-height:100%;aspect-ratio:auto}
 .vp-other-name{padding:14px 14px 4px;font-size:19px}
 .vp-other-rate{padding:0 14px}
 .vp-other-cta{align-self:end;padding:10px 14px 14px}
@@ -655,14 +664,16 @@ html:not(.js) .reveal{opacity:1;transform:none}
 .sa-policy-copy p{max-width:56ch;margin:0;color:var(--ink)}
 
 @media(prefers-reduced-motion:reduce){.fq-list summary::before,.fq-list summary::after{transition:none}}
-@media(max-width:1024px){
-.ab-fleet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* Five fleet cards: 5 across on desktop, 3 + 2 on tablets (six tracks), 1 per row on phones. */
+@media(max-width:1200px){
+.ab-fleet-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.ab-fleet-grid>li{grid-column:span 2}
+.ab-fleet-grid>li:nth-last-child(-n+2){grid-column:span 3}
 }
 @media(max-width:900px){
 .ab-values,.sa-cities{grid-template-columns:1fr}
 .ab-values article,.ab-values article:first-child,.ab-values article:last-child,.sa-city,.sa-city:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
 .ab-values article:last-child,.sa-city:last-child{border-bottom:0}
-.ab-fleet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .fq-layout{grid-template-columns:1fr}
 .fq-aside{position:static}
 }
@@ -671,6 +682,7 @@ html:not(.js) .reveal{opacity:1;transform:none}
 .photo-hero h1{margin:20px 0 18px;font-size:clamp(40px,11.5vw,54px)}
 .photo-hero .hero-copy{font-size:16px}
 .ab-fleet-grid{grid-template-columns:1fr}
+.ab-fleet-grid>li,.ab-fleet-grid>li:nth-last-child(-n+2){grid-column:auto}
 .fq-list summary{padding-right:40px}
 .fq-list details p{padding-right:0}
 }
@@ -759,3 +771,96 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 .site-header:before,.main-nav a:after{transition:none}
 }
 @media print{.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:1;transform:none}.site-header{position:static}}
+
+/* ---------- Responsive layer (all pages) ----------
+   Shared fixes on the breakpoints listed at the top of this file. */
+/* Page edges and notched phones: content keeps a 5vw margin or the safe-area inset, whichever is larger. */
+.container{width:min(var(--max),calc(100% - 2 * max(5vw,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))))}
+.site-header{padding-left:max(var(--header-pad,max(4.5vw,28px)),env(safe-area-inset-left,0px));padding-right:max(var(--header-pad,max(4.5vw,28px)),env(safe-area-inset-right,0px))}
+.site-footer .footer-bottom{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.menu-button{flex-shrink:0}
+
+/* Hero heights follow the visible screen (svh), so mobile browser bars never cut the hero off. */
+@supports(height:100svh){
+@media(min-width:901px){
+.hero{min-height:calc(100svh - var(--header-h));height:min(900px,calc(100svh - 20px))}
+.fleet-hero{min-height:min(760px,calc(100svh - var(--header-h)))}
+}
+/* Tablets and phones: the homepage hero fills the visible screen and grows with its content. */
+@media(max-width:900px){
+.hero{height:auto;min-height:calc(100svh - var(--header-h))}
+}
+}
+
+/* Desktop nav: each link is a 44px-wide target; the visual gap between labels stays 36px. */
+@media(min-width:901px){
+.main-nav{gap:20px}
+.main-nav a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:14px 8px}
+.main-nav a:after{left:8px;right:8px}
+}
+/* Short links get a 44px-wide target too. */
+.breadcrumbs a,.site-footer .footer-col a{min-width:44px}
+
+/* Grid pieces that change at the shared breakpoints. */
+@media(max-width:900px) and (min-width:601px){
+/* Footer: Brand + Fleet, then Company + Contact. */
+.site-footer .footer-grid>div:first-child{grid-column:auto}
+/* Fleet compare cards: five vehicles, so the last one spans both columns. */
+.fleet-table tbody tr:last-child:nth-child(odd){grid-column:1/-1}
+.fleet-table tbody tr:last-child:nth-child(odd) td{grid-template-columns:minmax(8.5rem,28%) 1fr}
+/* Homepage: the last fleet card sits photo-left like a row, so it doesn't outweigh the Sprinter card. */
+.hm-fleet-grid .fleet-card:last-child{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.hm-fleet-grid .fleet-card:last-child img{height:100%;aspect-ratio:4/3;object-position:center 75%}
+}
+
+/* Phones: body copy at 16px. Tracked-caps labels and photo captions keep their brand size. */
+@media(max-width:600px){
+:root{--header-pad:18px}
+.footer-tagline,.site-footer .footer-col a,.site-footer .footer-bottom,
+.vp-specs div,.vp-glance-list div,.vp-note,.vp-estimate-status,.vp-text-link,
+.hero-copy,.hm-hero .hero-copy,.fleet-result,.fleet-table-note,.fleet-terms .policy-card p,.fleet-list .fine-print,.fleet-cta-email,
+.rq-required,.rq-aside p,.rq-checks li,.page-request .estimate-note,.page-request .form-status{font-size:16px}
+/* Estimate table: a header row for the days, then each line's label above its amounts. */
+.vp-estimate,.vp-estimate thead,.vp-estimate tbody{display:block}
+.vp-estimate tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.16)}
+.vp-estimate:has([data-col="all"]) tr,.vp-estimate[data-day="weekday"] tr,.vp-estimate[data-day="weekend"] tr{grid-template-columns:1fr}
+.vp-estimate thead tr{padding-top:0;border-bottom-color:rgba(255,255,255,.5)}
+.vp-estimate thead td{display:none}
+.vp-estimate th,.vp-estimate td{padding:0;border:0}
+.vp-estimate tbody th{grid-column:1/-1}
+}
+/* Small phones: logo, menu and "Request" fit side by side at 320px. */
+@media(max-width:400px){
+:root{--header-pad:16px}
+.brand{gap:8px}
+.brand>span:last-child{letter-spacing:.16em}
+.brand-mark{width:34px;height:34px}
+.menu-button{margin-left:auto}
+.nav-cta{margin-left:8px;padding:0 10px}
+/* Events: the rate drops under the vehicle name instead of squeezing beside it. */
+.ev-tier a{grid-template-columns:1fr}
+}
+@media(max-width:360px){
+.nav-cta-arrow{display:none}
+}
+
+/* Short landscape phones: heroes fit the screen instead of forcing tall minimums. */
+@media(max-height:500px) and (orientation:landscape){
+.hero,.page-hero,.photo-hero,.photo-hero--right,.ev-hero,.rq-hero,.fleet-hero{min-height:0;height:auto}
+.hero .hero-content{padding:40px 0 36px}
+.hero h1{margin:16px 0 18px;font-size:clamp(44px,16svh,72px)}
+:is(.page-hero,.photo-hero,.ev-hero,.rq-hero) {padding-top:40px;padding-bottom:40px}
+:is(.page-hero,.photo-hero,.ev-hero,.rq-hero,.fleet-hero) h1{font-size:clamp(38px,13svh,60px)}
+/* Vehicle pages: photo beside the panel, so the name and rate are on the first screen. */
+.vp-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+/* The photo is one screen tall and stays put while the panel scrolls, so the vehicle stays in frame. */
+.vp-hero-media{position:sticky;top:var(--header-h);aspect-ratio:auto;min-height:0;height:calc(100svh - var(--header-h))}
+.vp-panel{padding:28px 5vw 32px;border-left:1px solid rgba(255,255,255,.14)}
+.vp-panel h1{font-size:clamp(34px,11svh,48px);margin-bottom:12px}
+.vp-panel .vehicle-rate{font-size:34px;margin-bottom:16px}
+.main-nav.is-open{max-height:calc(100svh - var(--header-h));overflow-y:auto}
+}
+/* Mobile menu panel respects the side insets too. */
+@media(max-width:900px){
+.main-nav{padding-left:max(5vw,env(safe-area-inset-left,0px));padding-right:max(5vw,env(safe-area-inset-right,0px))}
+}
