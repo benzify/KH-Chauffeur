@@ -865,11 +865,14 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 .main-nav{padding-left:max(5vw,env(safe-area-inset-left,0px));padding-right:max(5vw,env(safe-area-inset-right,0px))}
 }
 
-/* Footer credit link (© line). On touch screens it gets a 44px-tall target. */
-.site-footer .footer-credit{display:inline;margin:0;color:#eeeae1;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;transition:color var(--dur-fast) var(--ease-out)}
-.site-footer .footer-credit:hover{color:#fff}
+/* "© 2026 KH Chauffeurs" links to benzify.us: same footer colour, thin underline, 44px-tall target on touch screens.
+   display:inline overrides the old .footer a{display:block} rule in styles.css. */
+.site-footer .footer-credit{display:inline;margin:0;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:rgba(210,211,206,.5);text-underline-offset:.3em;white-space:nowrap;transition:color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+.site-footer .footer-credit:hover{color:#fff;text-decoration-color:currentColor}
 .site-footer .footer-credit:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
-@media(pointer:coarse){.site-footer .footer-credit{display:inline-flex;align-items:center;min-height:44px;min-width:44px}}
-/* "Website by Benzify" stays on one line; plain wrapping so balancing never strands the link. */
-.site-footer .footer-bottom .nowrap{white-space:nowrap}
-.site-footer .footer-bottom p:has(.footer-credit){text-wrap:wrap}
+/* inline-block + padding (not flex) keeps the spaces around the year. */
+@media(pointer:coarse){.site-footer .footer-credit{display:inline-block;padding:12px 0}}
+/* Footer KH mark and name link to the homepage. Overrides the old .footer a{display:block;color:#aaa} rule. */
+.site-footer .footer-home{display:inline-flex;align-items:center;gap:16px;min-height:44px;margin:0;color:inherit;text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+.site-footer .footer-home:hover{color:#fff}
+.site-footer .footer-home:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
