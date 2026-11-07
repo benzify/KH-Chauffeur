@@ -1,5 +1,5 @@
 /* Premium editorial art direction layered over the factual site system. */
-:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--max:1320px}
+:root{--ink:#111311;--night:#0a0c0a;--paper:#e9e5dc;--cream:#f3f0e9;--gold:#b99c68;--muted:#77776f;--line:rgba(17,19,17,.18);--line-strong:#85857e;--mist:#d2d3ce;--bone:#eeeae1;--champagne:#d0c4ae;--focus:#d5ad62;--line-dark:rgba(255,255,255,.2);--max:1320px}
 body{background:var(--paper);letter-spacing:-.006em}
 body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .site-header{height:94px;padding:0 max(4.5vw,28px);border-bottom:1px solid rgba(255,255,255,.16);background:#0a0d0b}
@@ -245,3 +245,517 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-cta .container{grid-template-columns:1fr;gap:32px}
 .fleet-cta h2{max-width:16ch}
 }
+
+/* ---------- Vehicle page template (body.page-vehicle, used by maybach-sprinter.html) ---------- */
+/* Reuses the fleet page's controls (.fleet-segment), captions (.fleet-caption) and gold band (.fleet-cta). */
+.page-vehicle{--muted:#5f5f58}
+.page-vehicle main :focus-visible{outline-color:var(--ink)}
+.page-vehicle .vp-hero :focus-visible,.page-vehicle .vp-estimator :focus-visible,.page-vehicle .vp-other a:focus-visible{outline-color:#d5ad62}
+.page-vehicle .fleet-cta :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+
+/* Hero: the panel sets the height; the photo fills its column at a landscape crop, lighter than before. */
+.vp-hero{grid-template-columns:minmax(0,1.45fr) minmax(360px,.85fr);min-height:0}
+.vp-hero-media{position:relative;margin:0;min-height:clamp(460px,44vw,700px);background:var(--night)}
+.vp-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% center;filter:saturate(.8) brightness(.86) contrast(1.04)}
+.vp-panel{display:flex;flex-direction:column;justify-content:center;padding:clamp(48px,5vw,80px) clamp(28px,4vw,64px)}
+.vp-panel h1{margin:0 0 20px;font-size:clamp(44px,4.4vw,72px);line-height:.95;text-wrap:balance}
+.vp-panel .vehicle-rate{margin:0 0 28px;font-size:clamp(40px,3.6vw,52px)}
+.vp-panel .vehicle-rate small{color:#d2d3ce}
+.vp-specs{margin:0 0 32px;border-top:1px solid rgba(255,255,255,.18)}
+.vp-specs div{display:grid;grid-template-columns:7rem 1fr;gap:16px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:14px;line-height:1.5}
+.vp-specs dt{font:600 11px/1.9 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#d0c4ae}
+.vp-specs dd{margin:0;color:#eeeae1}
+.vp-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.vp-actions .button{min-height:52px}
+.vp-text-link{display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:#eeeae1;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.vp-text-link:hover{color:#fff}
+
+/* Overview: heading and paragraph left, "At a glance" right. */
+.vp-overview{background:var(--cream);padding:clamp(72px,8vw,112px) 0}
+.vp-overview-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px clamp(40px,6vw,96px);align-items:start}
+.vp-overview-copy h2{max-width:16ch;margin:0 0 24px;font:400 clamp(36px,4.4vw,60px)/1.02 var(--serif);letter-spacing:-.035em;text-wrap:balance}
+.vp-overview-copy .lede{max-width:52ch;margin:0;font-size:clamp(17px,1.4vw,19px);color:var(--ink)}
+.vp-glance{padding-top:18px;border-top:1px solid var(--ink)}
+.vp-glance-title{margin:0 0 6px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.vp-glance-list{margin:0}
+.vp-glance-list div{display:grid;grid-template-columns:minmax(8rem,40%) 1fr;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5}
+.vp-glance-list dt{color:var(--muted)}
+.vp-glance-list dd{margin:0;color:var(--ink)}
+.vp-glance-list dd[data-field]{font:400 22px/1.1 var(--serif);letter-spacing:-.01em}
+
+/* Gallery: two photos at one ratio. */
+.vp-gallery{background:var(--paper);padding:clamp(56px,6vw,88px) 0}
+.vp-gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vp-photo{position:relative;margin:0}
+.vp-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.75) brightness(.88) contrast(1.04);background:var(--night)}
+.vp-photo img[src$="sprinter-exterior-enhanced.webp"]{object-position:74% center}
+.vp-photo img[src$="sprinter-interior-enhanced.webp"]{object-position:center 32%}
+/* Pages without a gallery (one photo): keep the paper / linen alternation. */
+.vp-overview + .vp-pricing{background:var(--paper)}
+.vp-overview + .vp-pricing + .vp-others{background:var(--cream)}
+/* Per-photo crops for the other vehicle pages. */
+.vp-hero-media img[src$="limo-bus-exterior.webp"]{object-position:28% center}
+.vp-hero-media img[src$="g-wagon-enhanced.webp"]{object-position:center 30%}
+.vp-photo img[src$="limo-bus-exterior.webp"]{object-position:20% center}
+.vp-photo img[src$="limo-bus-side.webp"]{object-position:center 62%}
+
+/* How pricing works: intro left, night estimate panel right. */
+.vp-pricing{background:var(--cream);padding:clamp(72px,8vw,112px) 0}
+.vp-pricing-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px clamp(40px,6vw,96px);align-items:start}
+.vp-pricing-intro h2{margin:0 0 20px;font:400 clamp(34px,4vw,54px)/1.02 var(--serif);letter-spacing:-.035em}
+.vp-pricing-intro .lede{max-width:40ch;margin:0 0 16px;font-size:17px;color:var(--ink)}
+.vp-note{max-width:44ch;margin:0;font-size:14px;color:var(--muted)}
+.vp-estimator{padding:clamp(24px,3vw,40px);background:#0c0f0d;color:#eeeae1}
+.vp-estimator-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px 32px;margin-bottom:28px}
+.vp-estimator-controls[hidden]{display:none}
+.vp-estimator .fleet-control-label{color:#d0c4ae}
+.vp-estimator .fleet-segment{border-color:rgba(255,255,255,.5)}
+.vp-estimator .fleet-segment button{border-right-color:rgba(255,255,255,.5);color:#eeeae1}
+.vp-estimator .fleet-segment button:last-child{border-right:0}
+.vp-estimator .fleet-segment button:hover{background:rgba(255,255,255,.08)}
+.vp-estimator .fleet-segment button[aria-pressed="true"]{background:#eeeae1;color:var(--night)}
+.vp-estimator .fleet-segment button:focus-visible{outline-color:#d5ad62}
+.vp-hours input{width:8rem;min-height:44px;margin:0;padding:0 12px;border:1px solid rgba(255,255,255,.5);border-radius:0;background:transparent;color:#eeeae1;font:500 16px var(--sans)}
+.vp-hours input:focus-visible{outline:3px solid #d5ad62;outline-offset:2px}
+.vp-estimate{width:100%;border-collapse:collapse;font-variant-numeric:lining-nums tabular-nums}
+.vp-estimate th,.vp-estimate td{padding:14px 12px 14px 0;border-bottom:1px solid rgba(255,255,255,.16);text-align:left;vertical-align:baseline}
+.vp-estimate thead th{font:500 13px var(--sans);color:#d2d3ce;border-bottom-color:rgba(255,255,255,.5)}
+.vp-estimate thead td{border-bottom-color:rgba(255,255,255,.5)}
+.vp-estimate tbody th{font:400 14px var(--sans);color:#d2d3ce}
+.vp-estimate tbody td{font:400 clamp(24px,2.4vw,32px)/1 var(--serif);letter-spacing:-.02em;color:#eeeae1}
+.vp-estimate[data-day="weekday"] [data-col="weekend"],.vp-estimate[data-day="weekend"] [data-col="weekday"]{display:none}
+.vp-estimate-status{min-height:1.5em;margin:14px 0 0;font-size:14px;color:#d0c4ae}
+.vp-estimate-link{min-height:52px;margin-top:20px}
+
+/* Other vehicles: slim cards built from data.js. */
+.vp-others{background:var(--paper);padding:clamp(72px,8vw,104px) 0}
+.vp-section-title{margin:0 0 32px;font:400 clamp(32px,3.6vw,48px)/1.05 var(--serif);letter-spacing:-.03em}
+.vp-others-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.vp-other a{display:flex;flex-direction:column;height:100%;background:#111411;color:#eeeae3;text-decoration:none}
+.vp-other img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.68) brightness(.8) contrast(1.06);transition:filter .6s ease}
+.vp-other a:hover img{filter:saturate(.82) brightness(.9)}
+.vp-other img[src$="sprinter-interior-enhanced.webp"]{object-position:center 30%}
+.vp-other img[src$="limo-bus-exterior.webp"]{object-position:12% center}
+.vp-other img[src$="g-wagon-enhanced.webp"]{object-position:center 12%}
+.vp-other img[src$="escalade-enhanced.webp"]{object-position:center 76%}
+.vp-other-name{padding:20px 20px 6px;font:400 22px/1.15 var(--serif);letter-spacing:-.01em}
+.vp-other-rate{padding:0 20px;font-size:14px;color:#d2d3ce}
+.vp-other-cta{margin-top:auto;padding:18px 20px 20px;font-size:13px;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+
+@media(max-width:1024px){
+.vp-others-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+.vp-hero{grid-template-columns:1fr}
+.vp-hero-media{min-height:0;aspect-ratio:16/10}
+.vp-panel{border-left:0}
+.vp-overview-grid,.vp-pricing-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+.vp-panel{padding:44px 5vw 52px}
+.vp-specs div{grid-template-columns:1fr;gap:2px}
+.vp-actions{flex-direction:column;align-items:stretch}
+.vp-actions .button{width:100%}
+.vp-actions .vp-text-link{justify-content:center}
+.vp-gallery-grid{grid-template-columns:1fr}
+.vp-estimator-controls{flex-direction:column;align-items:stretch}
+.vp-estimator .fleet-control,.vp-estimator .fleet-segment{width:100%}
+.vp-estimator .fleet-segment button{flex:1 1 0}
+.vp-hours input{width:100%}
+.vp-estimate th,.vp-estimate td{padding-right:8px}
+.vp-estimate-link{width:100%}
+.vp-others-grid{grid-template-columns:1fr}
+.vp-other a{display:grid;grid-template-columns:38% 1fr;grid-template-rows:auto auto 1fr}
+.vp-other img{grid-row:1 / 4;height:100%;min-height:128px;aspect-ratio:auto}
+.vp-other-name{padding:14px 14px 4px;font-size:19px}
+.vp-other-rate{padding:0 14px}
+.vp-other-cta{align-self:end;padding:10px 14px 14px}
+}
+
+/* ---------- Request page (body.page-request) ---------- */
+.page-request{--muted:#5f5f58}
+.page-request main :focus-visible{outline-color:var(--ink)}
+.page-request .rq-hero :focus-visible{outline-color:#d5ad62}
+
+/* Compact hero over the Sprinter cabin photo, with the fleet page's dark overlay. */
+.rq-hero{position:relative;min-height:clamp(420px,36vw,520px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,80px);background:linear-gradient(90deg,#0b0e0c 0%,#0b0e0c 46%,rgba(11,14,12,.72) 66%,rgba(11,14,12,.32) 100%),linear-gradient(0deg,rgba(11,14,12,.6),transparent 50%),url('assets/sprinter-interior-enhanced.webp') right 26%/58% auto no-repeat #0b0e0c}
+.rq-hero .breadcrumbs{margin:0;font-size:12px;color:#d2d3ce}
+.rq-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
+.rq-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
+.rq-hero .breadcrumbs a{display:inline-flex;align-items:center;min-height:44px;color:#eeeae1}
+.rq-hero h1{max-width:14ch;margin:24px 0 22px;font-size:clamp(46px,6.2vw,96px);line-height:.92;text-wrap:balance}
+.rq-hero .hero-copy{max-width:48ch;margin:0;font-size:17px;line-height:1.65;color:#d2d3ce}
+.rq-caption{left:auto;right:0}
+
+/* Form and side panel. */
+.rq-section{background:var(--cream);padding:clamp(56px,7vw,96px) 0 clamp(72px,8vw,112px)}
+.rq-layout{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:48px clamp(40px,6vw,96px);align-items:start}
+.rq-required{margin:0 0 20px;font-size:14px;color:var(--muted)}
+.rq-group{min-width:0;margin:0;padding:24px 0 0;border:0;border-top:1px solid var(--ink)}
+.rq-group+.rq-group{margin-top:40px}
+.rq-group legend{float:left;display:flex;align-items:baseline;gap:14px;width:100%;margin:0 0 20px;padding:0;font:400 clamp(24px,2.4vw,30px)/1.1 var(--serif);letter-spacing:-.02em;color:var(--ink)}
+.rq-group legend+*{clear:both}
+.rq-step{min-width:1.5rem;font:400 17px var(--serif);color:var(--muted)}
+.page-request .form-grid{grid-template-columns:1fr 1fr;gap:22px 28px}
+.page-request .form-grid>*{min-width:0}
+.page-request .field{font:500 12px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.page-request .field input,.page-request .field select,.page-request .field textarea{display:block;width:100%;min-width:0;min-height:48px;margin-top:6px;padding:10px 0;border:0;border-bottom:1px solid var(--line-strong);border-radius:0;background:transparent;color:var(--ink);font:400 16px/1.4 var(--sans);letter-spacing:0;text-transform:none}
+.page-request .field textarea{min-height:120px;resize:vertical}
+.page-request .field ::placeholder{color:#64645d;opacity:1}
+.page-request .field :is(input,select,textarea):focus{border-bottom-color:var(--ink)}
+.page-request .field :is(input,select,textarea):focus-visible,.page-request .field :is(input[type="date"],input[type="time"]):focus-within{outline:2px solid var(--ink);outline-offset:6px}
+.page-request .field :is(input,select,textarea):user-invalid{border-bottom:2px solid #8b2c22}
+.page-request .field.full{grid-column:1/-1}
+
+/* Live estimate: the night estimate panel, directly above the submit button. */
+.page-request .rq-estimate{margin:40px 0 0;padding:clamp(24px,3vw,34px);background:#0c0f0d;color:#eeeae1}
+.rq-estimate-vehicle{margin:0 0 18px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#d0c4ae}
+.page-request .estimate-grid{gap:16px 24px}
+.page-request .estimate span{display:block;margin-bottom:6px;font-size:13px;color:#d2d3ce}
+.page-request .estimate span b{font-weight:500}
+.page-request .estimate strong{font:400 clamp(28px,3vw,36px)/1 var(--serif);letter-spacing:-.02em;color:#eeeae1}
+.page-request .estimate-note{margin:18px 0 0;font-size:14px;color:#d2d3ce}
+.rq-submit{width:100%;min-height:56px;margin-top:24px;font-size:14px}
+.page-request .form-status{min-height:28px;margin:14px 0 0;font-size:14px;color:var(--ink)}
+
+.rq-aside{position:sticky;top:24px;padding-top:24px;border-top:1px solid var(--ink)}
+.rq-aside h2{margin:0 0 16px;font:400 clamp(28px,2.8vw,38px)/1.05 var(--serif);letter-spacing:-.03em}
+.rq-aside p{margin:0 0 20px;font-size:15px;color:var(--ink)}
+.rq-checks{margin:0 0 20px;padding:0;list-style:none;border-top:1px solid var(--line)}
+.rq-checks li{padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5;color:var(--ink)}
+.rq-aside a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;overflow-wrap:anywhere}
+
+@media(max-width:900px){
+.rq-layout{grid-template-columns:1fr}
+.rq-aside{position:static}
+}
+@media(max-width:600px){
+.rq-hero{min-height:0;padding:72px 0 64px;background:linear-gradient(90deg,rgba(11,14,12,.9),rgba(11,14,12,.7)),linear-gradient(0deg,rgba(11,14,12,.8),transparent 60%),url('assets/sprinter-interior-enhanced.webp') center 24%/cover #0b0e0c}
+.rq-hero h1{margin:20px 0 18px;font-size:clamp(42px,12vw,54px)}
+.rq-hero .hero-copy{font-size:16px}
+.page-request .form-grid{grid-template-columns:1fr;gap:18px}
+.page-request .estimate-grid{grid-template-columns:1fr}
+}
+
+/* ---------- Homepage (body.page-home) ---------- */
+/* Colours come from the :root tokens only (DESIGN.md: Mist, Bone, Champagne, Lamp Gold). */
+.page-home{--muted:#5f5f58}
+.page-home main :focus-visible{outline-color:var(--ink)}
+.page-home .hero :focus-visible,.page-home .section-dark :focus-visible,.page-home .fleet-card :focus-visible{outline-color:var(--focus)}
+.page-home .cta-band :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+
+/* Without JavaScript the fade-in never runs, so .reveal content must stay visible. */
+html:not(.js) .reveal{opacity:1;transform:none}
+/* DESIGN.md: the <em> second line changes colour, not style. */
+.page-home h1 em,.page-home .section-title em{font-style:normal}
+/* Section rhythm: fluid 72-112px instead of the global 140px, and less between the fleet and "Know the base". */
+.page-home .section{padding:clamp(72px,8vw,112px) 0}
+.page-home .hm-fleet{padding-bottom:clamp(56px,6vw,80px)}
+.page-home .hm-how{padding-top:clamp(56px,6vw,80px)}
+.page-home .section-title{margin-top:0}
+/* Hero: same photo and overlay; caption instead of the old disclosure. */
+.hm-caption{left:auto;right:0}
+/* Align the hero text to the page grid (it was a centred 920px box over the van). */
+.hm-hero .hero-content{max-width:none}
+.hm-hero .hero-copy{max-width:520px}
+.hm-hero .hero-actions .button-gold{min-height:52px}
+.hm-hero .hero-actions .button-outline{min-height:44px}
+
+/* Facts and Sprinter feature on one dark band. */
+.hm-feature .fact-strip{margin:0 0 clamp(64px,8vw,112px)}
+.hm-feature .fact strong{font-size:clamp(34px,3.4vw,46px);letter-spacing:-.02em}
+.hm-feature .fact span{font-size:12px;letter-spacing:.06em;color:var(--mist)}
+.hm-feature-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px clamp(48px,7vw,112px);align-items:center}
+.hm-feature-copy .section-title{margin:0 0 28px}
+.hm-feature-copy .lede{max-width:46ch;margin:0 0 24px;color:var(--mist)}
+.hm-feature-copy .text-link{display:inline-flex;align-items:center;min-height:44px;margin-top:0;font-size:15px;color:var(--bone)}
+.hm-feature-media{position:relative;margin:0}
+.hm-feature-media img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 32%;filter:saturate(.72) brightness(.82) contrast(1.05)}
+
+/* Fleet: featured Sprinters card, then three vehicles. */
+.hm-fleet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.hm-fleet-grid .fleet-card.featured{grid-column:1/-1}
+.hm-fleet-grid .fleet-card:not(.featured){display:flex;flex-direction:column}
+.hm-fleet-grid .fleet-card:not(.featured) img{height:auto;aspect-ratio:4/3}
+.hm-fleet-grid .fleet-card:not(.featured) .fleet-card-body{display:flex;flex-direction:column;flex:1;padding:28px}
+.hm-fleet-grid .fleet-card:not(.featured) h3{font-size:clamp(28px,2.6vw,36px)}
+.hm-fleet-grid .fleet-card:not(.featured) .text-link{margin-top:auto}
+.hm-fleet-grid img[src$="g-wagon-enhanced.webp"]{object-position:center 30%}
+.page-home .fleet-meta{font-size:11px;color:var(--mist)}
+.page-home .fleet-card h3{margin:14px 0 10px}
+.page-home .fleet-card-body p{margin:0 0 20px;color:var(--mist)}
+.page-home .fleet-card .text-link{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;color:var(--bone)}
+
+/* How it works: three ruled steps with serif numerals. */
+.hm-how .split{align-items:end}
+.hm-how .lede{margin:0;color:var(--ink)}
+.hm-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:clamp(48px,6vw,72px) 0 0;padding:0;list-style:none;counter-reset:step;border-top:1px solid var(--ink)}
+.hm-steps li{counter-increment:step;padding:28px 32px 8px;border-right:1px solid var(--line)}
+.hm-steps li:first-child{padding-left:0}
+.hm-steps li:last-child{padding-right:0;border-right:0}
+.hm-steps li::before{content:counter(step);display:block;margin-bottom:18px;font:400 34px/1 var(--serif);color:var(--ink)}
+.hm-steps h3{margin:0 0 8px;font:400 25px/1.15 var(--serif)}
+.hm-steps p{max-width:34ch;margin:0;color:var(--muted)}
+
+/* Policies. */
+.hm-policies .section-title{margin:0 0 48px}
+.hm-policies .policy-grid{margin-top:0}
+.hm-policies .policy-card p{color:var(--mist)}
+
+/* Gold band: main action plus email. */
+.hm-cta .fleet-cta-actions{flex:none;margin-top:0}
+
+@media(max-width:900px){
+.hm-feature-grid{grid-template-columns:1fr}
+.hm-feature-media img{aspect-ratio:16/10}
+.hm-fleet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hm-fleet-grid .fleet-card:last-child{grid-column:1/-1}
+.hm-fleet-grid .fleet-card:last-child img{aspect-ratio:16/9}
+.hm-steps{grid-template-columns:1fr}
+.hm-steps li,.hm-steps li:first-child,.hm-steps li:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
+.hm-policies .policy-grid{grid-template-columns:1fr}
+.hm-policies .policy-card{border-right:0}
+}
+@media(max-width:600px){
+.hm-fleet-grid{grid-template-columns:1fr}
+.hm-fleet-grid .fleet-card:last-child img{aspect-ratio:4/3}
+.hm-cta .fleet-cta-actions{width:100%;flex-direction:column;align-items:stretch;gap:8px}
+.hm-cta .button-dark{width:100%}
+.hm-cta .fleet-cta-email{justify-content:center}
+}
+
+/* ---------- Events page (body.page-events) ---------- */
+/* Reuses .hm-steps (ruled steps), .hm-cta / .fleet-cta-* (gold band) and .fleet-fit (seating tag). Colours from :root tokens only. */
+.page-events{--muted:#5f5f58}
+.page-events main :focus-visible{outline-color:var(--ink)}
+.page-events .ev-hero :focus-visible,.page-events .section-dark :focus-visible{outline-color:var(--focus)}
+.page-events .cta-band :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.page-events .section{padding:clamp(72px,8vw,112px) 0}
+.page-events .section-title{margin-top:0}
+
+/* Hero: limousine bus side photo as a full background, dark on the left behind the text. */
+.ev-hero{position:relative;min-height:clamp(480px,42vw,640px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,88px);background:linear-gradient(90deg,var(--night) 0%,rgba(10,12,10,.86) 34%,rgba(10,12,10,.45) 70%,rgba(10,12,10,.2) 100%),linear-gradient(0deg,rgba(10,12,10,.7),transparent 55%),url('assets/limo-bus-side-wide.webp') center 70%/cover var(--night)}
+.ev-hero .breadcrumbs{margin:0;font-size:12px;color:var(--mist)}
+.ev-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
+.ev-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
+.ev-hero .breadcrumbs a{display:inline-flex;align-items:center;min-height:44px;color:var(--bone)}
+.ev-hero h1{max-width:13ch;margin:24px 0 22px;font-size:clamp(46px,6.4vw,100px);line-height:.92;text-wrap:balance}
+.ev-hero .hero-copy{max-width:48ch;margin:0;font-size:17px;line-height:1.65;color:var(--mist)}
+
+/* Capacity: heading and paragraph, then the group-size guide. */
+.ev-capacity .split{align-items:end}
+.ev-capacity .lede{margin:0;color:var(--ink)}
+.ev-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(48px,6vw,72px);border-top:1px solid var(--ink)}
+.ev-tier{padding:28px 32px 0;border-right:1px solid var(--line)}
+.ev-tier:first-child{padding-left:0}
+.ev-tier:last-child{padding-right:0;border-right:0}
+.ev-tier h3{margin:0 0 16px;font:400 clamp(24px,2.4vw,30px)/1.1 var(--serif);letter-spacing:-.02em}
+.ev-tier .ev-ask{margin:0 0 12px}
+.ev-tier ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.ev-tier li{border-bottom:1px solid var(--line)}
+.ev-tier a{display:grid;grid-template-columns:1fr auto;gap:2px 16px;align-items:baseline;min-height:44px;padding:14px 0;color:var(--ink);text-decoration:none}
+.ev-name{font:400 19px/1.25 var(--serif)}
+.ev-rate{font-size:14px;color:var(--muted);white-space:nowrap}
+.ev-link{grid-column:1/-1;font-size:13px;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.ev-tier a:hover .ev-name{text-decoration:underline;text-underline-offset:.2em}
+
+/* Steps directly under the guide, in the same section. */
+.ev-steps{margin-top:clamp(56px,6vw,80px)}
+
+/* What to expect: ruled list beside the bus photo. */
+.ev-expect-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px clamp(48px,7vw,112px);align-items:center}
+.ev-expect .section-title{margin:0 0 28px}
+.ev-checks{margin:0;padding:0;list-style:none;border-top:1px solid var(--line-dark)}
+.ev-checks li{padding:16px 0;border-bottom:1px solid var(--line-dark);font-size:16px;line-height:1.55;color:var(--mist)}
+.ev-expect-media{margin:0}
+.ev-expect-media img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:20% center;filter:saturate(.75) brightness(.86) contrast(1.04)}
+
+@media(max-width:900px){
+.ev-guide{grid-template-columns:1fr}
+.ev-tier,.ev-tier:first-child,.ev-tier:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
+.ev-tier:last-child{border-bottom:0}
+.ev-expect-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+/* Phones: the bus photo as a band across the top (1263x626 = 49.6vw tall), text on night below. */
+.ev-hero{display:block;min-height:0;padding:calc(49.6vw - 8px) 0 56px;background:linear-gradient(180deg,rgba(10,12,10,0) 0,rgba(10,12,10,0) calc(49.6vw - 88px),var(--night) calc(49.6vw)),url('assets/limo-bus-side-wide.webp') center top/100% auto no-repeat var(--night)}
+.ev-hero h1{margin:20px 0 18px;font-size:clamp(42px,12vw,54px)}
+.ev-hero .hero-copy{font-size:16px}
+}
+
+/* ---------- About, FAQs and Service area (body.page-about / .page-faqs / .page-area) ---------- */
+/* Colours from :root tokens only. Reuses .hm-cta / .fleet-cta-* (gold band), .vp-others (fleet row) and .fleet-caption. */
+:is(.page-about,.page-faqs,.page-area){--muted:#5f5f58}
+:is(.page-about,.page-faqs,.page-area) main :focus-visible{outline-color:var(--ink)}
+:is(.page-about,.page-faqs,.page-area) :is(.photo-hero,.vp-other a) :focus-visible,:is(.page-about,.page-faqs,.page-area) .vp-other a:focus-visible{outline-color:var(--focus)}
+:is(.page-about,.page-faqs,.page-area) .cta-band :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+:is(.page-about,.page-faqs,.page-area) .section{padding:clamp(72px,8vw,112px) 0}
+:is(.page-about,.page-faqs,.page-area) .section-title{margin-top:0}
+
+/* Shared photo hero: set the photo with style="--hero-image:url('…');--hero-position:…" on the section. */
+.photo-hero{position:relative;min-height:clamp(460px,40vw,600px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,88px);background:linear-gradient(90deg,var(--night) 0%,rgba(10,12,10,.86) 34%,rgba(10,12,10,.45) 70%,rgba(10,12,10,.2) 100%),linear-gradient(0deg,rgba(10,12,10,.7),transparent 55%),var(--hero-image) var(--hero-position,center)/cover no-repeat var(--night)}
+.photo-hero .breadcrumbs{margin:0;font-size:12px;color:var(--mist)}
+.photo-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
+.photo-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
+.photo-hero .breadcrumbs a{display:inline-flex;align-items:center;min-height:44px;color:var(--bone)}
+.photo-hero h1{max-width:14ch;margin:24px 0 22px;font-size:clamp(46px,6.2vw,96px);line-height:.92;text-wrap:balance}
+.photo-hero .hero-copy{max-width:48ch;margin:0;font-size:17px;line-height:1.65;color:var(--mist)}
+.photo-hero-caption{left:auto;right:0}
+/* Tall photos (Escalade, G-Wagon): smaller, on the right, fading into solid night behind the text. */
+.photo-hero--right{background:linear-gradient(90deg,var(--night) 0%,var(--night) 44%,rgba(10,12,10,.7) 64%,rgba(10,12,10,.3) 100%),linear-gradient(0deg,rgba(10,12,10,.55),transparent 50%),var(--hero-image) var(--hero-position,right center)/58% auto no-repeat var(--night)}
+/* Heading-and-text splits: a modest gap when they stack on phones. */
+:is(.page-about,.page-faqs,.page-area) .split{gap:24px clamp(40px,8vw,120px)}
+:is(.page-about,.page-faqs,.page-area) .split>.section-title{margin-bottom:0}
+/* Smaller section headings on these text pages. */
+:is(.page-about,.page-faqs,.page-area) .section-title{font-size:clamp(40px,5vw,72px);line-height:.98}
+/* About: intro and "How we work" read as one block. */
+.page-about .ab-intro{padding-bottom:clamp(40px,5vw,64px)}
+.page-about .ab-values-section{padding-top:clamp(40px,5vw,64px);background:var(--paper)}
+.page-about .ab-values-section .section-title{margin-bottom:32px}
+.page-about .ab-fleet{background:var(--cream)}
+/* Service area: cities and policy read as one block. */
+.page-area .sa-cities-section{padding-bottom:clamp(40px,5vw,64px)}
+.page-area .sa-policy{padding-top:clamp(40px,5vw,64px);background:var(--paper)}
+
+/* About */
+.ab-intro .split{align-items:start}
+.ab-intro-copy .lede{margin:0 0 20px;color:var(--ink)}
+.ab-intro-copy p{max-width:56ch;margin:0;font-size:16px;color:var(--ink)}
+.ab-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.ab-values article{padding:28px 32px 4px;border-right:1px solid var(--line)}
+.ab-values article:first-child{padding-left:0}
+.ab-values article:last-child{padding-right:0;border-right:0}
+.ab-values h3{margin:0 0 10px;font:400 clamp(24px,2.4vw,30px)/1.1 var(--serif);letter-spacing:-.02em}
+.ab-values p{max-width:34ch;margin:0;color:var(--muted)}
+.ab-fleet-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+
+/* FAQs: intro on the left, ruled accordions on the right. */
+.fq-layout{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:40px clamp(48px,7vw,112px);align-items:start}
+.fq-aside{position:sticky;top:24px;padding-top:20px;border-top:1px solid var(--ink)}
+.fq-aside-text{margin:0 0 8px;font:400 clamp(24px,2.4vw,30px)/1.15 var(--serif);letter-spacing:-.02em;color:var(--ink)}
+.fq-email{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;overflow-wrap:anywhere}
+.fq-list{border-top:1px solid var(--ink)}
+.fq-list details{border-bottom:1px solid var(--line)}
+.fq-list summary{position:relative;display:flex;align-items:center;min-height:64px;padding:18px 48px 18px 0;font:400 clamp(21px,2vw,26px)/1.25 var(--serif);letter-spacing:-.01em;color:var(--ink);list-style:none;cursor:pointer}
+.fq-list summary::-webkit-details-marker{display:none}
+.fq-list summary::before,.fq-list summary::after{content:"";position:absolute;right:8px;top:50%;width:16px;height:1px;background:var(--ink);transition:transform .25s ease}
+.fq-list summary::after{transform:rotate(90deg)}
+.fq-list details[open] summary::after{transform:rotate(0)}
+.fq-list summary:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.fq-list details p{max-width:65ch;margin:0;padding:0 48px 24px 0;font-size:16px;line-height:1.7;color:var(--ink)}
+
+/* Service area */
+.sa-cities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink)}
+.sa-city{padding:32px 40px 8px 0;border-right:1px solid var(--line)}
+.sa-city:last-child{padding:32px 0 8px 40px;border-right:0}
+.sa-city h2{margin:0 0 14px;font:400 clamp(40px,5vw,72px)/1 var(--serif);letter-spacing:-.04em}
+.sa-city p{max-width:44ch;margin:0;font-size:16px;color:var(--ink)}
+.sa-policy .split{align-items:start}
+.sa-policy-copy .lede{margin:0 0 20px;color:var(--ink)}
+.sa-policy-copy p{max-width:56ch;margin:0;color:var(--ink)}
+
+@media(prefers-reduced-motion:reduce){.fq-list summary::before,.fq-list summary::after{transition:none}}
+@media(max-width:1024px){
+.ab-fleet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+.ab-values,.sa-cities{grid-template-columns:1fr}
+.ab-values article,.ab-values article:first-child,.ab-values article:last-child,.sa-city,.sa-city:last-child{padding:24px 0;border-right:0;border-bottom:1px solid var(--line)}
+.ab-values article:last-child,.sa-city:last-child{border-bottom:0}
+.ab-fleet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fq-layout{grid-template-columns:1fr}
+.fq-aside{position:static}
+}
+@media(max-width:600px){
+.photo-hero,.photo-hero--right{min-height:0;padding:72px 0 64px;background:linear-gradient(0deg,rgba(10,12,10,.92) 25%,rgba(10,12,10,.62) 70%,rgba(10,12,10,.5)),var(--hero-image) var(--hero-mobile-position,var(--hero-position,center))/cover no-repeat var(--night)}
+.photo-hero h1{margin:20px 0 18px;font-size:clamp(40px,11.5vw,54px)}
+.photo-hero .hero-copy{font-size:16px}
+.ab-fleet-grid{grid-template-columns:1fr}
+.fq-list summary{padding-right:40px}
+.fq-list details p{padding-right:0}
+}
+
+/* ---------- Motion (all pages) ----------
+   Classes: .reveal (one element), .reveal-stagger (its children), .hero-fade (photo hero in CSS
+   backgrounds), .hero-fade-media (hero <img> wrapper), .photo-zoom (photo hover), .photo-settle (photo comes to rest on reveal), .is-swapping (price crossfade).
+   Hidden starting states only apply once <html> has the .js class; reduced motion shows everything at once. */
+:root{--ease-out:cubic-bezier(.22,.61,.36,1);--ease-in-out:cubic-bezier(.65,0,.35,1);--dur-fast:180ms;--dur-base:420ms;--dur-slow:800ms;--dur-hero:900ms;--dur-settle:1200ms;--rise:20px;--stagger:70ms;--header-h:94px;interpolate-size:allow-keywords}
+@media(max-width:900px){:root{--header-h:78px}}
+
+/* Pinned header. In-page links and keyboard focus land below it. */
+html{scroll-padding-top:var(--header-h)}
+[id]{scroll-margin-top:16px}
+.site-header{position:sticky;top:0;isolation:isolate}
+.site-header:before{content:"";position:absolute;inset:0 0 -1px;z-index:-1;background:var(--night);border-bottom:1px solid var(--line-dark);opacity:0;transition:opacity var(--dur-base) var(--ease-out);pointer-events:none}
+.site-header.is-scrolled:before{opacity:1}
+.rq-aside,.fq-aside{top:calc(var(--header-h) + 24px)}
+
+/* Nav: underline grows from the left. The current page keeps a static underline. */
+.main-nav a{position:relative;text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+.main-nav a:after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform var(--dur-fast) var(--ease-out)}
+.main-nav a:hover,.main-nav a:focus-visible{color:#fff}
+.main-nav a:hover:after,.main-nav a:focus-visible:after,.main-nav a[aria-current="page"]:after{transform:scaleX(1)}
+.main-nav a[aria-current="page"]{text-decoration:none}
+@media(max-width:900px){.main-nav a:after{bottom:6px;right:auto;width:100%;max-width:100%}}
+
+/* Buttons and links: colour and underline changes only. */
+.button,.nav-cta,.site-footer .footer-col a{transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+.text-link,.vp-text-link,.vp-other-cta,.fleet-cta-email,.fq-email{transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),text-decoration-color var(--dur-fast) var(--ease-out)}
+.button-gold:hover{background:#f7f5ef}
+.button-outline:hover{border-color:#eeeae1}
+.nav-cta:hover{border-color:#fff}
+
+/* Fade-and-rise. Visible by default; hidden only while JS is about to reveal it. */
+.reveal{opacity:1;transform:none}
+.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:0;transform:translateY(var(--rise));transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);transition-delay:calc(var(--i,0) * var(--stagger))}
+.js .reveal.is-visible,.js .reveal-stagger>.is-visible{opacity:1;transform:none}
+/* Keyboard focus never waits for a reveal: anything holding focus shows at once. */
+.js .reveal:focus-within,.js .reveal-stagger>:focus-within{opacity:1;transform:none;transition:none}
+
+/* Hero photo: a dark layer under the text fades away, so only the photo appears to fade in. */
+.hero-fade{position:relative;isolation:isolate}
+.hero-fade:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night);opacity:0;pointer-events:none}
+.hero-fade-media{position:relative}
+.hero-fade-media:after{content:"";position:absolute;inset:0;z-index:1;background:var(--night);opacity:0;pointer-events:none}
+@keyframes kh-hero-fade{from{opacity:1}to{opacity:0}}
+@keyframes kh-swap{from{opacity:0}to{opacity:1}}
+@keyframes kh-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media(prefers-reduced-motion:no-preference){
+.hero-fade:before,.hero-fade-media:after{animation:kh-hero-fade var(--dur-hero) var(--ease-out) both}
+.is-swapping{animation:kh-swap var(--dur-base) var(--ease-out)}
+/* FAQs: the answer fades and rises on open; height and close are smooth where ::details-content is supported. */
+.fq-list details[open]>:not(summary){animation:kh-rise var(--dur-base) var(--ease-out)}
+.fq-list details::details-content{block-size:0;overflow:clip;opacity:0;transition:block-size var(--dur-base) var(--ease-in-out),opacity var(--dur-base) var(--ease-out),content-visibility var(--dur-base) allow-discrete}
+.fq-list details[open]::details-content{block-size:auto;opacity:1}
+/* Soft cross-page fade (Chrome/Edge 126+, Safari 18.2+). The header stays put. */
+@view-transition{navigation:auto;types:page}
+.site-header{view-transition-name:site-header}
+html:active-view-transition-type(page)::view-transition-old(root),html:active-view-transition-type(page)::view-transition-new(root){animation-duration:320ms;animation-timing-function:var(--ease-out)}
+}
+/* Filter and day toggles (same-page View Transitions). */
+::view-transition-old(root),::view-transition-new(root){animation-duration:var(--dur-base);animation-timing-function:var(--ease-out)}
+
+/* Photo hover: gentle zoom, desktop pointers only. */
+.photo-zoom{overflow:clip}
+.photo-zoom img{transition:filter .6s var(--ease-out),transform .6s var(--ease-out)}
+.fleet-card:hover img{transform:none}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+.photo-zoom:hover img{transform:scale(1.015)}
+.fleet-row-media.photo-zoom:hover img,.vp-photo.photo-zoom:hover img,.ev-expect-media.photo-zoom:hover img,.hm-feature-media.photo-zoom:hover img{filter:saturate(.8) brightness(.92) contrast(1.04)}
+.photo-settle.photo-zoom:hover img{transition-duration:.6s}
+}
+
+/* Photo settle: the photo starts at 1.04 and comes to rest as its section reveals.
+   The wrapper clips it (.photo-zoom), so nothing grows outside the frame. */
+@media(prefers-reduced-motion:no-preference){
+.photo-settle img{transition:filter .6s var(--ease-out),transform var(--dur-settle) var(--ease-out)}
+.js .reveal:not(.is-visible) .photo-settle img,.js .reveal-stagger>:not(.is-visible) .photo-settle img,
+.js .photo-settle.reveal:not(.is-visible) img,.js .reveal-stagger>.photo-settle:not(.is-visible) img{transform:scale(1.04)}
+}
+
+@media(prefers-reduced-motion:reduce){
+.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:1;transform:none;transition:none}
+.site-header:before,.main-nav a:after{transition:none}
+}
+@media print{.js .reveal,.js .reveal-stagger>:not(.sr-only){opacity:1;transform:none}.site-header{position:static}}
