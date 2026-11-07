@@ -876,3 +876,87 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 .site-footer .footer-home{display:inline-flex;align-items:center;gap:16px;min-height:44px;margin:0;color:inherit;text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
 .site-footer .footer-home:hover{color:#fff}
 .site-footer .footer-home:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+
+/* ---------- FAQ page: rates at a glance, questions by topic, how a request works ---------- */
+/* Rates at a glance: five cards filled from data.js (vehicle.js [data-field]); 5 across, 3 + 2, 2 + 2 + 1, then 1. */
+.page-faqs .fq-rates-section{background:var(--paper)}
+.fq-rates-section .split,.fq-how .split{align-items:end}
+.fq-rates-section .lede,.fq-how .lede{margin:0;color:var(--ink)}
+.fq-rates{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:clamp(40px,5vw,64px) 0 0;padding:0;list-style:none}
+.fq-rate{display:flex;flex-direction:column;min-width:0;padding:24px 22px 8px;border:1px solid var(--line);border-top-color:var(--ink);background:var(--cream)}
+.fq-rate-name{margin:0 0 14px;font:400 22px/1.15 var(--serif);letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+.fq-rate-price{margin:0 0 18px;font:400 40px/1 var(--serif);letter-spacing:-.03em;color:var(--ink);font-variant-numeric:lining-nums}
+.fq-rate-price small{margin-left:6px;font:400 14px var(--sans);letter-spacing:0;color:var(--muted)}
+.fq-rate-list{margin:0 0 8px;border-top:1px solid var(--line)}
+.fq-rate-list div{padding:10px 0;border-bottom:1px solid var(--line)}
+.fq-rate-list dt{font:600 11px/1.6 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fq-rate-list dd{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--ink);text-wrap:balance}
+.fq-rate-link{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;margin-top:auto;font-size:16px;font-weight:600;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;transition:text-decoration-color var(--dur-fast) var(--ease-out)}
+.fq-rate-link [aria-hidden="true"]{margin-left:.35em}
+
+/* Questions by topic: topic links in the sticky aside, one ruled accordion list per topic. */
+.fq-aside-title{margin:0 0 12px;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.fq-topics{margin:0 0 32px;padding:0;list-style:none;border-top:1px solid var(--line)}
+.fq-topics li{border-bottom:1px solid var(--line)}
+.fq-topics a{display:flex;align-items:center;min-height:44px;font-size:16px;color:var(--ink);text-decoration:none}
+.fq-topics a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.fq-groups{display:grid;gap:clamp(48px,5vw,64px);min-width:0}
+.fq-group-title{margin:0 0 16px;font:400 clamp(26px,2.4vw,32px)/1.1 var(--serif);letter-spacing:-.02em;color:var(--ink)}
+.fq-list a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+
+/* How a request works: the homepage's ruled steps, four across on desktop. */
+@media(min-width:901px){.fq-steps{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+@media(max-width:1200px){
+.fq-rates{grid-template-columns:repeat(6,minmax(0,1fr))}
+.fq-rates>li{grid-column:span 2}
+.fq-rates>li:nth-last-child(-n+2){grid-column:span 3}
+}
+@media(max-width:900px){
+.fq-rates{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fq-rates>li,.fq-rates>li:nth-last-child(-n+2){grid-column:auto}
+.fq-rates>li:last-child{grid-column:1/-1}
+.fq-topics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}
+}
+@media(max-width:600px){
+.fq-rates{grid-template-columns:1fr}
+
+}
+@media(max-width:400px){
+.fq-topics{grid-template-columns:1fr}
+}
+/* Alternate the backgrounds (paper, cream, paper) so the sections read as separate bands, not one long gap. */
+.page-faqs .fq-section{background:var(--cream)}
+.page-faqs .fq-how{background:var(--paper)}
+/* Rate cards side by side: names take two lines' height so prices and details line up across the row. */
+@media(min-width:601px){.fq-rate-name{min-height:2.3em}}
+
+/* ---------- Hover states (all pages): buttons invert, clickable cards get a hairline ---------- */
+/* The hover ring is an inset line (no border), so buttons keep their exact size. It switches on with the colour change. */
+.button,.fleet-cta .button-dark,.menu-button{transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}
+@media(hover:hover){
+/* Light button on dark sections: becomes an outline in Bone. */
+.button-gold:hover{background:transparent;color:#eeeae1;box-shadow:inset 0 0 0 1px #eeeae1}
+/* Dark button on light and gold sections: becomes an outline in Ink. */
+.button-dark:hover,.fleet-cta .button-dark:hover{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+/* Text-style hero button: brightens to white. */
+.button-outline:hover{color:#fff;border-color:#fff}
+.menu-button:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6)}
+}
+/* Boxed "Request" button in the collapsed header fills with Bone. */
+@media(hover:hover) and (max-width:900px){
+.nav-cta:hover{background:#eeeae1;color:var(--night);border-color:#eeeae1}
+}
+
+/* Clickable cards: a hairline fades in on hover. It is its own layer (opacity only), so cards never resize
+   and keyboard focus rings are untouched. Info-only boxes (policies, steps, values) stay still. */
+.fleet-card,.vp-other a,.fq-rate{position:relative}
+.fleet-card::after,.vp-other a::after{content:"";position:absolute;inset:8px;z-index:1;border:1px solid var(--champagne);opacity:0;pointer-events:none;transition:opacity var(--dur-base) var(--ease-out)}
+.fq-rate::after{content:"";position:absolute;inset:-1px;border:1px solid var(--ink);opacity:0;pointer-events:none;transition:opacity var(--dur-base) var(--ease-out)}
+.fleet-table tr{transition:border-color var(--dur-base) var(--ease-out)}
+@media(hover:hover){
+.fleet-card:hover::after,.vp-other a:hover::after,.fq-rate:hover::after{opacity:1}
+}
+@media(hover:hover) and (max-width:900px){
+.fleet-table tbody tr:hover{border-color:var(--ink)}
+}
