@@ -1,0 +1,26 @@
+# Repository and automation metadata
+.git/
+.github/
+.gitignore
+.deployignore
+.agents/
+AGENTS.md
+CLAUDE.md
+README
+README.*
+ASSET_PROVENANCE.md
+LAUNCH_DEPENDENCIES.md
+
+# Common local or dependency noise
+node_modules/
+.DS_Store
+._*
+*.log
+
+# Server-managed paths. Keep these excluded so rsync --delete protects them.
+.well-known/
+cgi-bin/
+.ftpquota
+error_log
+*.error_log
+

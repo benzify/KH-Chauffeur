@@ -1,0 +1,128 @@
+name: Deploy to Hostinger
+
+# Manual only by default. Add a push trigger only when automatic production
+# deployment has been explicitly requested.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — list what would change, upload nothing"
+        type: boolean
+        default: true
+      delete_orphans:
+        description: "Also DELETE server files that are not in the deploy source"
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-hostinger-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: rsync to public_html
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      SITE_DOMAIN: bookingkhgrup.com
+      SOURCE_DIR: .
+
+    steps:
+      - name: Refuse to deploy anything but main
+        if: github.ref_name != 'main'
+        run: |
+          echo "::error::Refusing to deploy '${{ github.ref_name }}'. Deploy production from main only."
+          exit 1
+
+      - name: Check out main
+        uses: actions/checkout@v5
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            echo "::warning::SSH_KNOWN_HOSTS is unset; discovering the currently presented host key."
+            ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" > ~/.ssh/known_hosts 2>/dev/null
+          fi
+          test -s ~/.ssh/known_hosts
+
+      - name: Verify local deploy source
+        run: |
+          set -euo pipefail
+          test -d "$SOURCE_DIR" || {
+            echo "::error::Deploy source '$SOURCE_DIR' does not exist."
+            exit 1
+          }
+          test -f "${SOURCE_DIR%/}/index.html" || {
+            echo "::error::Deploy source '$SOURCE_DIR' does not contain index.html."
+            exit 1
+          }
+
+      - name: Verify the remote web root before touching anything
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          set -euo pipefail
+          REMOTE="/home/${SSH_USER}/domains/${SITE_DOMAIN}/public_html"
+          echo "target: ${REMOTE}"
+          ssh -p "$SSH_PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes \
+            "${SSH_USER}@${SSH_HOST}" \
+            "test -d '${REMOTE}' && test -f '${REMOTE}/index.html'" \
+            || {
+              echo "::error::${REMOTE} is missing or does not contain index.html. Refusing to deploy."
+              exit 1
+            }
+
+      - name: Show what will happen
+        run: |
+          echo "ref:            ${{ github.ref_name }}"
+          echo "commit:         ${{ github.sha }}"
+          echo "domain:         ${SITE_DOMAIN}"
+          echo "source:         ${SOURCE_DIR}"
+          echo "dry run:        ${{ inputs.dry_run }}"
+          echo "delete orphans: ${{ inputs.delete_orphans }}"
+
+      - name: rsync
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          set -euo pipefail
+          FLAGS="-rltzi --checksum --human-readable"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          if [ "${{ inputs.delete_orphans }}" = "true" ]; then
+            FLAGS="$FLAGS --delete"
+          fi
+
+          rsync $FLAGS \
+            -e "ssh -p ${SSH_PORT} -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            --exclude-from=.deployignore \
+            "${SOURCE_DIR%/}/" \
+            "${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/domains/${SITE_DOMAIN}/public_html/"
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN — nothing was uploaded. Re-run with dry_run unchecked to deploy." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deployed \`${{ github.ref_name }}\` @ \`${{ github.sha }}\` to public_html." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
