@@ -8,7 +8,12 @@ window.KH_FLEET = {
 
 window.KH_BOOKING = {
   email: "bookingkhgrup@gmail.com",
+  phone: "+14046687532",
+  phoneDisplay: "(404) 668-7532",
   timezone: "America/New_York",
+  // Free Geoapify key for address suggestions on the request form (restrict it to
+  // bookingkhgrup.com in the Geoapify dashboard). Empty = plain address fields.
+  geoapifyKey: "522e714c9e1d45a3b53101d88b25a681",
   depositPercent: 50,
   metroPolicy: "Tolls and parking are included for Metro Atlanta trips.",
   outOfTownPolicy: "Tolls and parking are additional for out-of-town trips."

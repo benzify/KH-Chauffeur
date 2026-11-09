@@ -70,6 +70,20 @@ jobs:
             exit 1
           }
 
+      # Pages link CSS/JS as "file.css?v=dev". Swapping "dev" for the commit ID gives
+      # each deploy new file URLs, so Hostinger's CDN and browsers (which keep CSS/JS
+      # for 7 days) fetch the fresh files instead of serving stale ones.
+      - name: Version CSS and JS links
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_SHA::7}"
+          sed -i "s/?v=dev\"/?v=${VERSION}\"/g" "${SOURCE_DIR%/}"/*.html
+          grep -q "?v=${VERSION}\"" "${SOURCE_DIR%/}/index.html" || {
+            echo "::error::No ?v=dev links were versioned in index.html."
+            exit 1
+          }
+          echo "CSS/JS links versioned as ?v=${VERSION}"
+
       - name: Verify the remote web root before touching anything
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}

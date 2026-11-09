@@ -2,6 +2,8 @@
 
 Static multi-page site (plain HTML, CSS, JS). Styles: `styles.css` (base) and `premium.css` (overrides). Fleet data: `data.js`.
 
+Link every CSS/JS file with `?v=dev` (e.g. `<script src="script.js?v=dev">`). The deploy workflow replaces `dev` with the commit ID so Hostinger's CDN and browsers never serve stale CSS/JS.
+
 ## Git workflow (required)
 
 - **Never work on `main`.** Before making any code change, create a new branch from an up-to-date `main` (or continue on the current task's branch if one is already in progress).
