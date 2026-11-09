@@ -391,3 +391,66 @@ if (form) {
     });
   });
 }
+
+// Vehicle photo carousels: G-Wagon and Executive Mercedes Sprinter photos cycle every 2 seconds everywhere they appear
+// (img tags, the cards vehicle.js builds later, and CSS hero backgrounds set through --hero-image).
+(() => {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = {
+    "g-wagon": { photos: ["assets/g-wagon-enhanced.webp", "assets/g-wagon-front.webp", "assets/g-wagon-rear.webp"], i: 0 },
+    "executive-sprinter": { photos: ["assets/executive-sprinter.webp", "assets/sprinter-interior-enhanced.webp"], i: 0 }
+  };
+  const file = src => (src || "").split("/").pop().split("?")[0];
+  const groupOf = src => Object.keys(groups).find(k => groups[k].photos.some(p => file(p) === file(src)));
+  Object.values(groups).forEach(g => g.photos.forEach(src => { new Image().src = src; }));
+  const setBackdrop = (img, g) => img.parentElement && img.parentElement.style.setProperty("--gw-bg", `url("${g.photos[g.i]}")`);
+  const layout = img => { // size the blurred backdrop to the photo's own box so it never spills under card text
+    const f = img.parentElement; if (!f || img.dataset.carousel !== "g-wagon") return;
+    f.style.setProperty("--gw-t", img.offsetTop + "px"); f.style.setProperty("--gw-l", img.offsetLeft + "px");
+    f.style.setProperty("--gw-w", img.offsetWidth + "px"); f.style.setProperty("--gw-h", img.offsetHeight + "px");
+  };
+  const layoutAll = () => document.querySelectorAll("img[data-carousel]").forEach(layout);
+  const release = img => { // an img that no longer shows a carousel photo (e.g. a cloned card re-pointed by vehicle.js)
+    img.removeAttribute("data-carousel");
+    if (img.parentElement) { img.parentElement.classList.remove("gw-frame"); img.parentElement.style.removeProperty("--gw-bg"); }
+  };
+  const prepare = img => {
+    const key = groupOf(img.getAttribute("src"));
+    if (!key) return release(img);
+    img.setAttribute("data-carousel", key);
+    const frame = img.parentElement;
+    frame.classList.add("gw-frame");
+    if (getComputedStyle(frame).position === "static") frame.style.position = "relative";
+    setBackdrop(img, groups[key]);
+    layout(img);
+    img.addEventListener("load", () => layout(img));
+  };
+  const scan = () => {
+    document.querySelectorAll("img[src]").forEach(img => {
+      if (groupOf(img.getAttribute("src"))) prepare(img); else if (img.dataset.carousel) release(img);
+    });
+    document.querySelectorAll('[style*="--hero-image"]').forEach(el => {
+      const key = groupOf((el.getAttribute("style").match(/url\(['"]?([^'")]+)/) || [])[1]);
+      if (key) el.setAttribute("data-hero-carousel", key);
+    });
+  };
+  const tick = () => {
+    if (document.hidden) return;
+    Object.values(groups).forEach(g => { g.i = (g.i + 1) % g.photos.length; });
+    document.querySelectorAll("img[data-carousel]").forEach(img => {
+      const g = groups[img.dataset.carousel];
+      if (!g || !groupOf(img.getAttribute("src"))) return release(img);
+      img.classList.add("is-swapping");
+      setTimeout(() => { img.src = g.photos[g.i]; setBackdrop(img, g); img.removeAttribute("srcset"); img.classList.remove("is-swapping"); }, 350);
+    });
+    layoutAll();
+    document.querySelectorAll("[data-hero-carousel]").forEach(el => {
+      const g = groups[el.dataset.heroCarousel];
+      el.style.setProperty("--hero-image", `url('${g.photos[g.i]}')`);
+    });
+  };
+  scan();
+  window.addEventListener("resize", layoutAll);
+  window.addEventListener("load", () => { scan(); layoutAll(); }); // picks up cards that vehicle.js builds after this script runs
+  setInterval(tick, 2000);
+})();
