@@ -179,6 +179,15 @@ if (form) {
       return;
     }
     const values = Object.fromEntries(new FormData(form));
+    const sentMessage = "Thank you — your inquiry was sent. The KH Chauffeurs team will confirm availability. No reservation has been confirmed yet.";
+    // Honeypot: the hidden "company_website" field is only ever filled in by bots.
+    // Show them the usual thank-you and send nothing.
+    if ((values.company_website || "").trim()) {
+      form.reset();
+      updateEstimate();
+      status.textContent = sentMessage;
+      return;
+    }
     const subject = `Availability inquiry — ${result.vehicle.name} — ${values.service_date}`;
     const body = [
       "KH Chauffeurs availability inquiry",
@@ -204,8 +213,7 @@ if (form) {
       service_date: values.service_date, pickup_time: values.pickup_time,
       pickup: values.pickup, dropoff: values.dropoff,
       hours: values.hours, event_type: values.event_type,
-      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance),
-      company_website: values.company_website || "" // honeypot: people leave it empty, n8n rejects it when filled
+      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance)
     };
     const submitButton = $("[type=submit]", form);
     submitButton.disabled = true;
@@ -214,7 +222,7 @@ if (form) {
     send.then(() => {
       form.reset();
       updateEstimate();
-      status.textContent = "Thank you — your inquiry was sent. The KH Chauffeurs team will confirm availability. No reservation has been confirmed yet.";
+      status.textContent = sentMessage;
     }).catch(() => {
       // Keep the visitor's answers and give them two other ways to reach the team.
       status.textContent = "";

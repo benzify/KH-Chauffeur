@@ -5,9 +5,9 @@
 (() => {
   const N8N = {
     callUrl: "https://n8n.srv1193896.hstgr.cloud/webhook/ce83bafd-cce4-47ca-acee-056705cb32b8",
-    callToken: "kh-call-BRv0gNhveguRGGHI1ZLjh16Z",
+    callToken: "sdg-9kR2mQx7VtZp4wLnGt8Fb3",
     formUrl: "https://n8n.srv1193896.hstgr.cloud/webhook/987525e9-5f35-4ef7-bcfb-495c2d99bf07",
-    formToken: "kh-form-s5CG7GCdB3-Il-a3iaMXcBa9",
+    formToken: "sdgform-ShcwzYVuGgtUkoBn0HWwxfI6",
     formTimeoutMs: 10000
   };
 
@@ -98,9 +98,11 @@
   // Sends a form submission. Field names match what the workflow's "Prepare Form Row"
   // node looks for (name, email, phone, message, utm_*, pageUrl, referrer); any other
   // field is listed under "Form Details".
-  // Resolves only when n8n confirms it accepted the lead. Rejects on a network error,
-  // a timeout, any non-2xx status, or a reply of {"success": false}, so the caller can
-  // offer another way to reach the team. The workflow replies after checking the token.
+  // Resolves only when n8n confirms it received the lead. Rejects on a network error,
+  // a timeout, any non-2xx status (e.g. 404 when the workflow is inactive) or a reply of
+  // {"success": false}, so the caller can offer another way to reach the team.
+  // The workflow reads the token from the URL (?token=) and replies before checking it;
+  // that's fine because this page always sends the right token.
   window.khSendLead = async (fields, formName = "Website form") => {
     const body = new URLSearchParams();
     for (const [key, value] of Object.entries(fields)) {
@@ -115,15 +117,15 @@
       utm_campaign: attribution.utm_campaign || "",
       utm_term: attribution.utm_term || "",
       utm_content: attribution.utm_content || "",
-      "form[name]": formName,
-      token: N8N.formToken
+      "form[name]": formName
     };
     Object.entries(tracking).forEach(([key, value]) => body.set(key, value));
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), N8N.formTimeoutMs);
     try {
-      const res = await fetch(N8N.formUrl, { method: "POST", mode: "cors", body, signal: controller.signal });
+      const url = `${N8N.formUrl}?token=${encodeURIComponent(N8N.formToken)}`;
+      const res = await fetch(url, { method: "POST", mode: "cors", body, signal: controller.signal });
       if (!res.ok) throw new Error(`Form webhook returned ${res.status}`);
       const reply = await res.json().catch(() => ({}));
       if (reply && reply.success === false) throw new Error("Form webhook rejected the submission");
