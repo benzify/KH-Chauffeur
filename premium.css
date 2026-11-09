@@ -27,9 +27,9 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-card img[src$="escalade-enhanced.webp"]{object-position:center 76%}
 
 /* Executive Sprinter and Escalade pages: both photos are tall. Fit them to the hero instead of letting them set the hero's height. */
-.vehicle-hero img[src$="sprinter-interior-enhanced.webp"]{object-position:center 38%}
+.vehicle-hero img[src$="executive-sprinter.webp"]{object-position:center 38%}
 .vehicle-hero img[src$="escalade-enhanced.webp"]{object-position:center 78%}
-@media(min-width:901px){.vehicle-hero img[src$="sprinter-interior-enhanced.webp"],.vehicle-hero img[src$="escalade-enhanced.webp"]{height:0;min-height:100%}}
+@media(min-width:901px){.vehicle-hero img[src$="executive-sprinter.webp"],.vehicle-hero img[src$="escalade-enhanced.webp"]{height:0;min-height:100%}}
 
 /* Text for screen readers only. */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -166,7 +166,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .fleet-row-media{position:relative;margin:0}
 .fleet-row-media img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;filter:saturate(.72) brightness(.86) contrast(1.05);background:var(--night);transition:opacity .3s ease,filter .3s ease}
 #maybach-sprinter .fleet-row-media img{object-position:80% center}
-#executive-sprinter .fleet-row-media img{object-position:center 30%}
+#executive-sprinter .fleet-row-media img{object-position:center 45%}
 #g-wagon .fleet-row-media img{object-position:center 12%}
 #escalade-esv .fleet-row-media img{object-position:center 75%}
 .fleet-caption{position:absolute;left:0;bottom:0;padding:8px 12px;background:rgba(10,12,10,.8);color:#eeeae1;font:500 12px/1.4 var(--sans);letter-spacing:.04em}
@@ -297,7 +297,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-photo{position:relative;margin:0}
 .vp-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.75) brightness(.88) contrast(1.04);background:var(--night)}
 .vp-photo img[src$="sprinter-exterior-enhanced.webp"]{object-position:74% center}
-.vp-photo img[src$="sprinter-interior-enhanced.webp"]{object-position:center 32%}
+.vp-photo img[src$="executive-sprinter.webp"]{object-position:center 32%}
 /* Pages without a gallery (one photo): keep the paper / linen alternation. */
 .vp-overview + .vp-pricing{background:var(--paper)}
 .vp-overview + .vp-pricing + .vp-others{background:var(--cream)}
@@ -342,7 +342,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .vp-other a{display:flex;flex-direction:column;height:100%;background:#111411;color:#eeeae3;text-decoration:none}
 .vp-other img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.68) brightness(.8) contrast(1.06);transition:filter .6s ease}
 .vp-other a:hover img{filter:saturate(.82) brightness(.9)}
-.vp-other img[src$="sprinter-interior-enhanced.webp"]{object-position:center 30%}
+.vp-other img[src$="executive-sprinter.webp"]{object-position:center 30%}
 .vp-other img[src$="limo-bus-exterior.webp"]{object-position:12% center}
 .vp-other img[src$="g-wagon-enhanced.webp"]{object-position:center 12%}
 .vp-other img[src$="escalade-enhanced.webp"]{object-position:center 76%}
@@ -387,7 +387,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .page-request .rq-hero :focus-visible{outline-color:#d5ad62}
 
 /* Compact hero over the Sprinter cabin photo, with the fleet page's dark overlay. */
-.rq-hero{position:relative;min-height:clamp(420px,36vw,520px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,80px);background:linear-gradient(90deg,#0b0e0c 0%,#0b0e0c 46%,rgba(11,14,12,.72) 66%,rgba(11,14,12,.32) 100%),linear-gradient(0deg,rgba(11,14,12,.6),transparent 50%),url('assets/sprinter-interior-enhanced.webp') right 26%/58% auto no-repeat #0b0e0c}
+.rq-hero{position:relative;min-height:clamp(420px,36vw,520px);padding:clamp(96px,9vw,128px) 0 clamp(56px,6vw,80px);background:linear-gradient(90deg,#0b0e0c 0%,#0b0e0c 46%,rgba(11,14,12,.72) 66%,rgba(11,14,12,.32) 100%),linear-gradient(0deg,rgba(11,14,12,.6),transparent 50%),url('assets/executive-sprinter.webp') right 26%/58% auto no-repeat #0b0e0c}
 .rq-hero .breadcrumbs{margin:0;font-size:12px;color:#d2d3ce}
 .rq-hero .breadcrumbs ol{display:flex;flex-wrap:wrap;align-items:center;gap:0 .5em;margin:0;padding:0;list-style:none}
 .rq-hero .breadcrumbs li+li:before{content:"/";margin-right:.5em}
@@ -439,7 +439,7 @@ body:before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .rq-aside{position:static}
 }
 @media(max-width:600px){
-.rq-hero{min-height:0;padding:72px 0 64px;background:linear-gradient(90deg,rgba(11,14,12,.9),rgba(11,14,12,.7)),linear-gradient(0deg,rgba(11,14,12,.8),transparent 60%),url('assets/sprinter-interior-enhanced.webp') center 24%/cover #0b0e0c}
+.rq-hero{min-height:0;padding:72px 0 64px;background:linear-gradient(90deg,rgba(11,14,12,.9),rgba(11,14,12,.7)),linear-gradient(0deg,rgba(11,14,12,.8),transparent 60%),url('assets/executive-sprinter.webp') center 24%/cover #0b0e0c}
 .rq-hero h1{margin:20px 0 18px;font-size:clamp(42px,12vw,54px)}
 .rq-hero .hero-copy{font-size:16px}
 .page-request .form-grid{grid-template-columns:1fr;gap:18px}
@@ -960,3 +960,20 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 @media(hover:hover) and (max-width:900px){
 .fleet-table tbody tr:hover{border-color:var(--ink)}
 }
+
+/* Executive Sprinter cabin photo (portrait): centre the crop on the seats and starlight ceiling in wide frames. */
+.vehicle-hero img[src$="executive-sprinter.webp"],.vp-hero-media img[src$="executive-sprinter.webp"],.vp-photo img[src$="executive-sprinter.webp"]{object-position:center 45%}
+.vp-other img[src$="executive-sprinter.webp"]{object-position:center 40%}
+
+/* G-Wagon photo carousel (script.js swaps the photo every 2 seconds). */
+img[data-carousel]{transition:opacity .35s ease}
+img[data-carousel].is-swapping{opacity:0}
+
+/* Carousel photos fill their frames like the other vehicle photos (cover crop). */
+img[data-carousel]{object-fit:cover!important;background:var(--night)}
+img[data-carousel="executive-sprinter"]{object-position:center 45%!important}
+
+/* G-Wagon photos are tall: show them whole (no zoom) over a blurred copy of the same photo that fills the frame. */
+img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"]){object-fit:contain!important;object-position:center!important;background:transparent!important}
+.gw-frame:has(>img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"])){isolation:isolate;overflow:hidden;background:var(--night)}
+.gw-frame:has(>img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"]))::before{content:"";position:absolute;top:var(--gw-t,0);left:var(--gw-l,0);width:var(--gw-w,100%);height:var(--gw-h,100%);z-index:-1;background:var(--gw-bg) center/cover no-repeat;filter:blur(26px) brightness(.8) saturate(1.1);transition:background-image .35s ease}
