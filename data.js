@@ -8,6 +8,8 @@ window.KH_FLEET = {
 
 window.KH_BOOKING = {
   email: "bookingkhgrup@gmail.com",
+  phone: "+14046687532",
+  phoneDisplay: "(404) 668-7532",
   timezone: "America/New_York",
   depositPercent: 50,
   metroPolicy: "Tolls and parking are included for Metro Atlanta trips.",

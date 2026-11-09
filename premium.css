@@ -960,3 +960,30 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 @media(hover:hover) and (max-width:900px){
 .fleet-table tbody tr:hover{border-color:var(--ink)}
 }
+
+/* ---------- Call buttons (all pages) ---------- */
+.call-icon{display:block;flex:none}
+.nav-call{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#eeeae1;font:500 13px var(--sans);letter-spacing:.02em;text-decoration:none;white-space:nowrap}
+.nav-call:hover .nav-call-number{text-decoration:underline;text-underline-offset:.3em}
+@media(max-width:1100px) and (min-width:901px){
+.nav-call-number{display:none}
+}
+@media(max-width:900px){
+.nav-call{justify-content:center;width:44px;height:44px;margin-left:10px;border:1px solid rgba(255,255,255,.24)}
+.nav-call-number{display:none}
+}
+@media(max-width:400px){
+.nav-call{margin-left:8px}
+}
+
+.rq-aside .rq-call{margin-bottom:4px}
+
+/* Fixed call / request bar on phones. */
+.mobile-cta-bar{display:none}
+@media(max-width:600px){
+.mobile-cta-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#0a0d0b;border-top:1px solid rgba(255,255,255,.16)}
+.mobile-cta-bar a{flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 12px;font:600 14px var(--sans);text-decoration:none;white-space:nowrap}
+.mobile-cta-call{background:#eeeae1;color:var(--night)}
+.mobile-cta-request{border:1px solid rgba(255,255,255,.48);color:#eeeae1}
+body{padding-bottom:calc(69px + env(safe-area-inset-bottom))}
+}

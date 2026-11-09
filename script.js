@@ -187,7 +187,33 @@ if (form) {
       `Balance on arrival: ${money(result.balance)}`, "",
       "Estimate is subject to availability and confirmed applicable charges."
     ].join("\n");
-    status.textContent = "Your email app should open with a prepared inquiry. Review it before sending; no reservation has been confirmed.";
-    location.href = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoHref = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Field names follow what the n8n "Prepare Form Row" node reads; the rest land in "Form Details".
+    const lead = {
+      name: values.name, email: values.email, phone: values.phone,
+      message: values.notes || "",
+      vehicle: result.vehicle.name, passengers: values.passengers,
+      service_date: values.service_date, pickup_time: values.pickup_time,
+      pickup: values.pickup, dropoff: values.dropoff,
+      hours: values.hours, event_type: values.event_type,
+      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance)
+    };
+    const submitButton = $("[type=submit]", form);
+    submitButton.disabled = true;
+    status.textContent = "Sending your inquiry…";
+    const send = window.khSendLead ? window.khSendLead(lead, "Availability inquiry") : Promise.reject(new Error("Lead tracking unavailable"));
+    send.then(() => {
+      form.reset();
+      updateEstimate();
+      status.textContent = "Thank you — your inquiry was sent. The KH Chauffeurs team will confirm availability. No reservation has been confirmed yet.";
+    }).catch(() => {
+      // Keep the visitor's answers and give them two other ways to reach the team.
+      status.textContent = "";
+      const { phone, phoneDisplay } = window.KH_BOOKING;
+      const call = Object.assign(document.createElement("a"), { href: `tel:${phone}`, textContent: phoneDisplay });
+      const mail = Object.assign(document.createElement("a"), { href: mailtoHref, textContent: "email the prepared inquiry" });
+      status.append("We couldn't send your inquiry. Please call ", call, " or ", mail, ".");
+    }).finally(() => { submitButton.disabled = false; });
   });
 }
