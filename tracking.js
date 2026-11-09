@@ -5,9 +5,10 @@
 (() => {
   const N8N = {
     callUrl: "https://n8n.srv1193896.hstgr.cloud/webhook/ce83bafd-cce4-47ca-acee-056705cb32b8",
-    callToken: "sdg-9kR2mQx7VtZp4wLnGt8Fb3",
+    callToken: "kh-call-BRv0gNhveguRGGHI1ZLjh16Z",
     formUrl: "https://n8n.srv1193896.hstgr.cloud/webhook/987525e9-5f35-4ef7-bcfb-495c2d99bf07",
-    formToken: "sdgform-ShcwzYVuGgtUkoBn0HWwxfI6"
+    formToken: "kh-form-s5CG7GCdB3-Il-a3iaMXcBa9",
+    formTimeoutMs: 10000
   };
 
   // Storage can throw (private windows, blocked site data), so every access is guarded.
@@ -64,11 +65,16 @@
     fetch(url, { method: "POST", mode: "no-cors", keepalive: true, body }).catch(() => {});
   };
 
+  // A double tap shouldn't log two calls. n8n also ignores repeats within 30 seconds.
+  let lastCallSentAt = 0;
   document.addEventListener("click", event => {
     const link = event.target.closest && event.target.closest('a[href^="tel:"]');
     if (!link) return;
     const phone = decodeURIComponent(link.getAttribute("href").slice(4)).trim();
     if (!phone) return;
+    const now = Date.now();
+    if (now - lastCallSentAt < 2000) return;
+    lastCallSentAt = now;
     beacon(N8N.callUrl, {
       phone,
       pageUrl: pageUrlWithClickId(),
@@ -84,29 +90,46 @@
       userAgent: navigator.userAgent,
       screenResolution: `${screen.width}x${screen.height}`,
       language: navigator.language || "",
-      buttonLocation: link.dataset.callLocation || "",
+      buttonLocation: link.dataset.callLocation || "other",
       token: N8N.callToken
     });
   });
 
   // Sends a form submission. Field names match what the workflow's "Prepare Form Row"
   // node looks for (name, email, phone, message, utm_*, pageUrl, referrer); any other
-  // field is listed under "Form Details". Resolves when the request leaves the
-  // browser; rejects on a network failure.
-  // mode "no-cors" because the workflow's form response sends no CORS headers,
-  // so the response itself can't be read.
-  window.khSendLead = (fields, formName = "Website form") => {
-    const body = new URLSearchParams({
-      ...fields,
+  // field is listed under "Form Details".
+  // Resolves only when n8n confirms it accepted the lead. Rejects on a network error,
+  // a timeout, any non-2xx status, or a reply of {"success": false}, so the caller can
+  // offer another way to reach the team. The workflow replies after checking the token.
+  window.khSendLead = async (fields, formName = "Website form") => {
+    const body = new URLSearchParams();
+    for (const [key, value] of Object.entries(fields)) {
+      if (value !== undefined && value !== null) body.set(key, String(value));
+    }
+    // Set last on purpose: these always describe the visit, whatever the form sends.
+    const tracking = {
       pageUrl: pageUrlWithClickId(),
       referrer: attribution.referrer,
       utm_source: attribution.utm_source || "",
       utm_medium: attribution.utm_medium || "",
       utm_campaign: attribution.utm_campaign || "",
       utm_term: attribution.utm_term || "",
-      "form[name]": formName
-    });
-    const url = `${N8N.formUrl}?token=${encodeURIComponent(N8N.formToken)}`;
-    return fetch(url, { method: "POST", mode: "no-cors", keepalive: true, body });
+      utm_content: attribution.utm_content || "",
+      "form[name]": formName,
+      token: N8N.formToken
+    };
+    Object.entries(tracking).forEach(([key, value]) => body.set(key, value));
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), N8N.formTimeoutMs);
+    try {
+      const res = await fetch(N8N.formUrl, { method: "POST", mode: "cors", body, signal: controller.signal });
+      if (!res.ok) throw new Error(`Form webhook returned ${res.status}`);
+      const reply = await res.json().catch(() => ({}));
+      if (reply && reply.success === false) throw new Error("Form webhook rejected the submission");
+      return reply;
+    } finally {
+      clearTimeout(timer);
+    }
   };
 })();

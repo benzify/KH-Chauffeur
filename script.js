@@ -25,6 +25,13 @@ if (menuButton && nav) {
   });
 }
 
+// While a form field has focus (phone keyboard open), CSS hides the fixed mobile call bar.
+const isField = node => node instanceof Element && node.matches("input, select, textarea");
+document.addEventListener("focusin", event => { if (isField(event.target)) document.body.classList.add("is-typing"); });
+document.addEventListener("focusout", event => {
+  if (isField(event.target) && !isField(event.relatedTarget)) document.body.classList.remove("is-typing");
+});
+
 $$('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -197,7 +204,8 @@ if (form) {
       service_date: values.service_date, pickup_time: values.pickup_time,
       pickup: values.pickup, dropoff: values.dropoff,
       hours: values.hours, event_type: values.event_type,
-      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance)
+      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance),
+      company_website: values.company_website || "" // honeypot: people leave it empty, n8n rejects it when filled
     };
     const submitButton = $("[type=submit]", form);
     submitButton.disabled = true;

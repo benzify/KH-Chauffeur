@@ -977,6 +977,8 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 }
 
 .rq-aside .rq-call{margin-bottom:4px}
+/* Honeypot field: off-screen for people, still filled in by bots. */
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 
 /* Fixed call / request bar on phones. */
 .mobile-cta-bar{display:none}
@@ -987,3 +989,4 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 .mobile-cta-request{border:1px solid rgba(255,255,255,.48);color:#eeeae1}
 body{padding-bottom:calc(69px + env(safe-area-inset-bottom))}
 }
+@media(max-width:600px){.is-typing .mobile-cta-bar{display:none}}
