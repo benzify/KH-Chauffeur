@@ -965,15 +965,54 @@ html:active-view-transition-type(page)::view-transition-old(root),html:active-vi
 .vehicle-hero img[src$="executive-sprinter.webp"],.vp-hero-media img[src$="executive-sprinter.webp"],.vp-photo img[src$="executive-sprinter.webp"]{object-position:center 45%}
 .vp-other img[src$="executive-sprinter.webp"]{object-position:center 40%}
 
-/* G-Wagon photo carousel (script.js swaps the photo every 2 seconds). */
-img[data-carousel]{transition:opacity .35s ease}
-img[data-carousel].is-swapping{opacity:0}
+/* ---------- Vehicle gallery carousel (vehicle pages, built by gallery.js) ---------- */
+.vg{padding:clamp(64px,8vw,112px) 0;background:var(--night);color:var(--bone)}
+.vg-head{display:flex;align-items:end;justify-content:space-between;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(28px,3.5vw,44px)}
+.vg-head h2{font:400 clamp(34px,4.4vw,56px)/1.05 var(--serif);letter-spacing:-.03em;margin:10px 0 0}
+.vg-arrow:focus-visible,.vg-dot:focus-visible,.vg-body:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.vg-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:center;border-radius:12px}
+.vg-stage{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#050605;touch-action:pan-y;box-shadow:0 24px 60px -28px rgba(0,0,0,.7)}
+.vg-slide{position:absolute;inset:0;margin:0;overflow:hidden;background:#050605;opacity:0;z-index:1;visibility:hidden}
+.vg-slide::before{content:"";position:absolute;inset:-40px;background:var(--vg-bg) center/cover no-repeat;filter:blur(32px) brightness(.55) saturate(1.1)}
+.vg-slide img{position:relative;display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.vg-slide.is-active{opacity:1;z-index:2;visibility:visible}
+.vg-slide.is-incoming{z-index:3;visibility:visible}
+.js .vg-slide{transition:opacity .5s cubic-bezier(.4,0,.2,1)}
+.vg-label{position:absolute;left:16px;bottom:16px;z-index:2;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(10,12,10,.62);padding:7px 11px;border-radius:999px}
+.vg-info{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
+.vg-panel h3{font:400 clamp(28px,3vw,40px)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 14px}
+.vg-panel p{color:var(--mist);margin:0 0 14px;max-width:46ch}
+.vg-panel .vg-meta{color:var(--champagne);font-size:14px;letter-spacing:.02em}
+.vg-links{display:flex;align-items:center;flex-wrap:wrap;gap:14px 24px;margin-top:22px}
+.vg-link{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px;font-size:14px;transition:border-color .3s ease}
+.vg-link:hover{border-color:var(--gold)}
+.vg-controls{display:flex;align-items:center;gap:14px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14)}
+.vg-arrow{appearance:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;transition:background-color .3s ease,border-color .3s ease,color .3s ease}
+.vg-arrow:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.vg-dots{display:flex;align-items:center;gap:6px;min-width:0;flex:0 1 auto}
+.vg-dot{appearance:none;border:0;padding:0;flex:0 1 22px;min-width:4px;width:22px;height:4px;border-radius:4px;background:rgba(255,255,255,.28);cursor:pointer;position:relative;transition:width .4s ease,background-color .4s ease}
+.vg-dot::after{content:"";position:absolute;inset:-14px -3px}
+.vg-dot.is-active{width:40px;flex-basis:40px;background:var(--gold)}
+.vg-count{margin-left:auto;white-space:nowrap;flex:none;font-size:13px;letter-spacing:.08em;color:var(--mist);font-variant-numeric:tabular-nums}
+@media(max-width:900px){.vg-body{grid-template-columns:minmax(0,1fr);gap:28px}}
+@media(max-width:700px){
+  .vg-head{align-items:flex-start}
+  .vg-stage{aspect-ratio:4/5;border-radius:10px}
+  .vg-links .button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.js .vg-slide,.vg-dot,.vg-arrow{transition:none}}
+/* Gallery sits on a dark band: the vehicle page default (ink) focus ring would be invisible here. */
+.page-vehicle .vg :focus-visible{outline-color:var(--gold)}
+/* No script: the section keeps its plain photo grid. */
+.vg-fallback .vp-gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.vg-fallback .vp-photo img{border-radius:10px}
 
-/* Carousel photos fill their frames like the other vehicle photos (cover crop). */
-img[data-carousel]{object-fit:cover!important;background:var(--night)}
-img[data-carousel="executive-sprinter"]{object-position:center 45%!important}
-
-/* G-Wagon photos are tall: show them whole (no zoom) over a blurred copy of the same photo that fills the frame. */
-img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"]){object-fit:contain!important;object-position:center!important;background:transparent!important}
-.gw-frame:has(>img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"])){isolation:isolate;overflow:hidden;background:var(--night)}
-.gw-frame:has(>img[data-carousel="g-wagon"]:not([src$="g-wagon-enhanced.webp"]))::before{content:"";position:absolute;top:var(--gw-t,0);left:var(--gw-l,0);width:var(--gw-w,100%);height:var(--gw-h,100%);z-index:-1;background:var(--gw-bg) center/cover no-repeat;filter:blur(26px) brightness(.8) saturate(1.1);transition:background-image .35s ease}
+/* ---------- KH Chauffeurs logo (header and footer image) ---------- */
+/* The logo file has a solid black background; "screen" blending lets the dark header/footer show through it, so no box edge appears. */
+.brand-logo{display:block;width:auto;max-width:none;object-fit:contain;mix-blend-mode:screen}
+.brand{align-items:center;gap:0}
+.brand .brand-logo{height:78px}
+.site-footer .footer-home{gap:0}
+.site-footer .footer-home .brand-logo{height:96px}
+@media(max-width:900px){.brand .brand-logo{height:64px}.site-footer .footer-home .brand-logo{height:88px}}
+@media(max-width:600px){.brand .brand-logo{height:58px}}
