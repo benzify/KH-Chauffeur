@@ -25,6 +25,13 @@ if (menuButton && nav) {
   });
 }
 
+// While a form field has focus (phone keyboard open), CSS hides the fixed mobile call bar.
+const isField = node => node instanceof Element && node.matches("input, select, textarea");
+document.addEventListener("focusin", event => { if (isField(event.target)) document.body.classList.add("is-typing"); });
+document.addEventListener("focusout", event => {
+  if (isField(event.target) && !isField(event.relatedTarget)) document.body.classList.remove("is-typing");
+});
+
 $$('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -128,11 +135,130 @@ if (form) {
   const vehicleSelect = $("[name=vehicle]", form);
   const dateInput = $("[name=service_date]", form);
   const hoursInput = $("[name=hours]", form);
+  const passengersInput = $("[name=passengers]", form);
+  const phoneInput = $("[name=phone]", form);
+  const hoursHint = $("[data-hours-hint]", form);
+  const passengersHint = $("[data-passengers-hint]", form);
   const estimateBox = $("[data-estimate]", form);
   const status = $("[data-form-status]", form);
+  const submitButton = $("[type=submit]", form);
+  const submitLabel = submitButton.textContent;
+  const done = $("[data-form-done]", form);
+  const DEFAULT_MAX_PASSENGERS = 28;
+  const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   dateInput.min = today;
 
+  // ---------- Vehicle rules: minimum hours (by vehicle and day) and seats ----------
+  // The rules live in data.js (minimumForDay, passengers).
+  const vehicleRules = () => {
+    const vehicle = window.KH_FLEET[vehicleSelect.value];
+    if (!vehicle) return null;
+    const byDay = DAY_NAMES.map((_, day) => vehicle.minimumForDay(day));
+    const lowest = Math.min(...byDay);
+    const highest = Math.max(...byDay);
+    const date = parseLocalDate(dateInput.value);
+    // Without a date, use the highest minimum so the form never promises less than applies.
+    const minimum = date ? byDay[date.getDay()] : highest;
+    let hint;
+    if (lowest === highest) hint = `${minimum}-hour minimum for this vehicle.`;
+    else {
+      const longDays = DAY_NAMES.filter((_, day) => byDay[day] === highest).map(name => `${name}s`).join(" and ");
+      hint = date
+        ? `${minimum}-hour minimum on ${DAY_NAMES[date.getDay()]}s for this vehicle.`
+        : `${lowest}-hour minimum, ${highest} hours on ${longDays}.`;
+    }
+    return { vehicle, minimum, hint, varies: lowest !== highest, date, seats: vehicle.passengers || null };
+  };
+
+  // Hours the form filled in itself follow the minimum up and down; hours the visitor
+  // typed are only ever raised to the minimum, never lowered.
+  let hoursAutoFilled = false;
+  hoursInput.addEventListener("input", () => { hoursAutoFilled = false; });
+
+  // Called when the vehicle or date changes: sets limits and raises hours that fall below the minimum.
+  const applyVehicleRules = () => {
+    const rules = vehicleRules();
+    if (!rules) {
+      hoursInput.min = "1";
+      passengersInput.max = String(DEFAULT_MAX_PASSENGERS);
+      hoursHint.textContent = "Choose a vehicle to see its minimum.";
+      passengersHint.textContent = "";
+    } else {
+      hoursInput.min = String(rules.minimum);
+      if (!hoursInput.value || hoursAutoFilled || Number(hoursInput.value) < rules.minimum) {
+        hoursInput.value = String(rules.minimum);
+        hoursAutoFilled = true;
+      }
+      hoursHint.textContent = rules.hint;
+      passengersInput.max = String(rules.seats || DEFAULT_MAX_PASSENGERS);
+      passengersHint.textContent = rules.seats ? `Seats up to ${rules.seats}.` : "";
+    }
+    checkRules();
+  };
+
+  // Custom messages for the vehicle-specific limits (the browser's own wording is generic).
+  const checkRules = () => {
+    const rules = vehicleRules();
+    const hours = Number(hoursInput.value);
+    hoursInput.setCustomValidity(rules && hoursInput.value && hours < rules.minimum
+      ? `This vehicle has a ${rules.minimum}-hour minimum${rules.varies && rules.date ? " on the date you picked" : ""}.`
+      : "");
+    const seats = rules && rules.seats;
+    passengersInput.setCustomValidity(seats && Number(passengersInput.value) > seats
+      ? `The ${rules.vehicle.name} seats up to ${seats}. Choose a larger vehicle or lower the count.`
+      : "");
+    const digits = phoneInput.value.replace(/\D/g, "");
+    phoneInput.setCustomValidity(phoneInput.value && digits.length < 10 ? "Enter a phone number with area code." : "");
+  };
+
+  // ---------- Inline errors ----------
+  const fields = $$("input, select, textarea", form).filter(field => field.name && field.name !== "company_website");
+  const MISSING = {
+    name: "Enter your name.", phone: "Enter your phone number.", email: "Enter your email address.",
+    vehicle: "Choose a vehicle.", passengers: "Enter how many passengers.", hours: "Enter the rental hours.",
+    service_date: "Choose a service date.", pickup_time: "Choose a pickup time.",
+    pickup: "Enter the pickup location.", dropoff: "Enter the drop-off location."
+  };
+  const errorFor = field => {
+    let node = $(`#err-${field.name}`, form);
+    if (!node) {
+      node = Object.assign(document.createElement("span"), { id: `err-${field.name}`, className: "field-error" });
+      field.closest("label").append(node);
+      const describedBy = [field.getAttribute("aria-describedby"), node.id].filter(Boolean).join(" ");
+      field.setAttribute("aria-describedby", describedBy);
+    }
+    return node;
+  };
+  const messageFor = field => {
+    const v = field.validity;
+    if (v.valueMissing) return MISSING[field.name] || "This field is required.";
+    if (v.customError) return field.validationMessage;
+    if (v.typeMismatch && field.type === "email") return "Enter an email address like name@example.com.";
+    if (v.rangeUnderflow && field.type === "date") return "Choose today or a later date.";
+    if (v.rangeUnderflow) return `Enter ${field.min} or more.`;
+    if (v.rangeOverflow) return `Enter ${field.max} or fewer.`;
+    return field.validationMessage;
+  };
+  const showError = field => {
+    const message = field.checkValidity() ? "" : messageFor(field);
+    errorFor(field).textContent = message;
+    if (message) field.setAttribute("aria-invalid", "true");
+    else field.removeAttribute("aria-invalid");
+    return !message;
+  };
+  const clearErrors = () => fields.forEach(field => {
+    field.removeAttribute("aria-invalid");
+    const node = $(`#err-${field.name}`, form);
+    if (node) node.textContent = "";
+  });
+  // Once a field shows an error, re-check it as the visitor types so the error clears straight away.
+  fields.forEach(field => field.addEventListener("input", () => {
+    checkRules();
+    if (field.getAttribute("aria-invalid") === "true") showError(field);
+  }));
+
+  // ---------- Estimate ----------
   const updateEstimate = () => {
     const result = calculateEstimate(vehicleSelect.value, dateInput.value, Number(hoursInput.value));
     if (!result) {
@@ -153,6 +279,7 @@ if (form) {
     return result;
   };
 
+  [vehicleSelect, dateInput].forEach(input => input.addEventListener("input", applyVehicleRules));
   [vehicleSelect, dateInput, hoursInput].forEach(input => input.addEventListener("input", updateEstimate));
   const params = new URLSearchParams(location.search);
   const preset = params.get("vehicle");
@@ -160,18 +287,63 @@ if (form) {
   // Hours carried over from a vehicle page estimator, e.g. request.html?vehicle=maybach-sprinter&hours=6
   const presetHours = Number(params.get("hours"));
   if (Number.isInteger(presetHours) && presetHours >= 1 && presetHours <= 24) hoursInput.value = String(presetHours);
+  applyVehicleRules();
   updateEstimate();
 
+  // ---------- Status, confirmation and "send another" ----------
+  const setStatus = (kind, ...content) => {
+    status.className = `form-status${kind ? ` is-${kind}` : ""}`;
+    status.replaceChildren(...content);
+  };
+  const longDate = value => {
+    const date = parseLocalDate(value);
+    return date ? new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(date) : value;
+  };
+  const shortTime = value => {
+    const [h, m] = String(value).split(":").map(Number);
+    if (!Number.isFinite(h)) return value;
+    return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(2000, 0, 1, h, m || 0));
+  };
+  const showDone = (vehicleName, values) => {
+    $("[data-done-summary]", done).textContent =
+      `${vehicleName} on ${longDate(values.service_date)}, pickup at ${shortTime(values.pickup_time)}.`;
+    setStatus("");
+    form.classList.add("is-sent");
+    done.hidden = false;
+    done.scrollIntoView({ block: "start", behavior: reduceMotion.matches ? "auto" : "smooth" });
+    $("h2", done).focus({ preventScroll: true });
+  };
+  $("[data-form-again]", form).addEventListener("click", () => {
+    form.reset();
+    hoursAutoFilled = false;
+    clearErrors();
+    setStatus("");
+    done.hidden = true;
+    form.classList.remove("is-sent");
+    applyVehicleRules();
+    updateEstimate();
+    $("[name=name]", form).focus();
+  });
+
+  // ---------- Submit ----------
   form.addEventListener("submit", event => {
     event.preventDefault();
-    status.textContent = "";
-    if (!form.reportValidity()) return;
-    const result = updateEstimate();
-    if (!result) {
-      status.textContent = "Choose a vehicle, service date and requested hours to prepare your inquiry.";
+    setStatus("");
+    checkRules();
+    const invalid = fields.filter(field => !showError(field));
+    if (invalid.length) {
+      invalid[0].focus();
+      setStatus("error", `Check the ${invalid.length === 1 ? "highlighted field" : `${invalid.length} highlighted fields`} and send again.`);
       return;
     }
+    const result = updateEstimate();
     const values = Object.fromEntries(new FormData(form));
+    // Honeypot: the hidden "company_website" field is only ever filled in by bots.
+    // Show them the usual confirmation and send nothing.
+    if ((values.company_website || "").trim()) {
+      showDone(result.vehicle.name, values);
+      return;
+    }
     const subject = `Availability inquiry — ${result.vehicle.name} — ${values.service_date}`;
     const body = [
       "KH Chauffeurs availability inquiry",
@@ -180,15 +352,43 @@ if (form) {
       `Preferred vehicle: ${result.vehicle.name}`, `Passenger count: ${values.passengers}`,
       `Service date: ${values.service_date}`, `Pickup time: ${values.pickup_time}`,
       `Pickup location: ${values.pickup}`, `Drop-off location: ${values.dropoff}`,
-      `Requested rental hours: ${values.hours}`, `Event or trip type: ${values.event_type}`,
-      `Notes: ${values.notes || "None provided"}`, "",
+      `Requested rental hours: ${values.hours}`, `Event or trip type: ${values.event_type || "Not provided"}`,
+      `Notes: ${values.notes || "Not provided"}`, "",
       `Base rental · ${result.billableHours} hour${result.billableHours === 1 ? "" : "s"}: ${money(result.base)}`,
       `50% deposit: ${money(result.deposit)}`,
       `Balance on arrival: ${money(result.balance)}`, "",
       "Estimate is subject to availability and confirmed applicable charges."
     ].join("\n");
-    status.textContent = "Your email app should open with a prepared inquiry. Review it before sending; no reservation has been confirmed.";
-    location.href = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoHref = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Field names follow what the n8n "Prepare Form Row" node reads; the rest land in "Form Details".
+    const lead = {
+      name: values.name, email: values.email, phone: values.phone,
+      message: values.notes || "",
+      vehicle: result.vehicle.name, passengers: values.passengers,
+      service_date: values.service_date, pickup_time: values.pickup_time,
+      pickup: values.pickup, dropoff: values.dropoff,
+      hours: values.hours, event_type: values.event_type || "",
+      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance)
+    };
+    submitButton.disabled = true;
+    submitButton.setAttribute("aria-busy", "true");
+    submitButton.textContent = "Sending…";
+    const send = window.khSendLead ? window.khSendLead(lead, "Availability inquiry") : Promise.reject(new Error("Lead tracking unavailable"));
+    send.then(() => {
+      showDone(result.vehicle.name, values);
+    }).catch(() => {
+      // Keep the visitor's answers and give them two other ways to reach the team.
+      const { phone, phoneDisplay } = window.KH_BOOKING;
+      const call = Object.assign(document.createElement("a"), { href: `tel:${phone}`, textContent: phoneDisplay });
+      const mail = Object.assign(document.createElement("a"), { href: mailtoHref, textContent: "email the prepared inquiry" });
+      const title = Object.assign(document.createElement("strong"), { textContent: "Your inquiry didn't send." });
+      setStatus("error", title, " Your answers are still here. Try again, call ", call, ", or ", mail, ".");
+    }).finally(() => {
+      submitButton.disabled = false;
+      submitButton.removeAttribute("aria-busy");
+      submitButton.textContent = submitLabel;
+    });
   });
 }
 
