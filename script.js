@@ -25,6 +25,13 @@ if (menuButton && nav) {
   });
 }
 
+// While a form field has focus (phone keyboard open), CSS hides the fixed mobile call bar.
+const isField = node => node instanceof Element && node.matches("input, select, textarea");
+document.addEventListener("focusin", event => { if (isField(event.target)) document.body.classList.add("is-typing"); });
+document.addEventListener("focusout", event => {
+  if (isField(event.target) && !isField(event.relatedTarget)) document.body.classList.remove("is-typing");
+});
+
 $$('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -172,6 +179,15 @@ if (form) {
       return;
     }
     const values = Object.fromEntries(new FormData(form));
+    const sentMessage = "Thank you — your inquiry was sent. The KH Chauffeurs team will confirm availability. No reservation has been confirmed yet.";
+    // Honeypot: the hidden "company_website" field is only ever filled in by bots.
+    // Show them the usual thank-you and send nothing.
+    if ((values.company_website || "").trim()) {
+      form.reset();
+      updateEstimate();
+      status.textContent = sentMessage;
+      return;
+    }
     const subject = `Availability inquiry — ${result.vehicle.name} — ${values.service_date}`;
     const body = [
       "KH Chauffeurs availability inquiry",
@@ -187,7 +203,33 @@ if (form) {
       `Balance on arrival: ${money(result.balance)}`, "",
       "Estimate is subject to availability and confirmed applicable charges."
     ].join("\n");
-    status.textContent = "Your email app should open with a prepared inquiry. Review it before sending; no reservation has been confirmed.";
-    location.href = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoHref = `mailto:${window.KH_BOOKING.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Field names follow what the n8n "Prepare Form Row" node reads; the rest land in "Form Details".
+    const lead = {
+      name: values.name, email: values.email, phone: values.phone,
+      message: values.notes || "",
+      vehicle: result.vehicle.name, passengers: values.passengers,
+      service_date: values.service_date, pickup_time: values.pickup_time,
+      pickup: values.pickup, dropoff: values.dropoff,
+      hours: values.hours, event_type: values.event_type,
+      estimate_base: money(result.base), deposit: money(result.deposit), balance: money(result.balance)
+    };
+    const submitButton = $("[type=submit]", form);
+    submitButton.disabled = true;
+    status.textContent = "Sending your inquiry…";
+    const send = window.khSendLead ? window.khSendLead(lead, "Availability inquiry") : Promise.reject(new Error("Lead tracking unavailable"));
+    send.then(() => {
+      form.reset();
+      updateEstimate();
+      status.textContent = sentMessage;
+    }).catch(() => {
+      // Keep the visitor's answers and give them two other ways to reach the team.
+      status.textContent = "";
+      const { phone, phoneDisplay } = window.KH_BOOKING;
+      const call = Object.assign(document.createElement("a"), { href: `tel:${phone}`, textContent: phoneDisplay });
+      const mail = Object.assign(document.createElement("a"), { href: mailtoHref, textContent: "email the prepared inquiry" });
+      status.append("We couldn't send your inquiry. Please call ", call, " or ", mail, ".");
+    }).finally(() => { submitButton.disabled = false; });
   });
 }
